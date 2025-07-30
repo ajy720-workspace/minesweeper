@@ -10,8 +10,13 @@ export type CellState = {
 
 export type Board = CellState[][];
 
-export const createBoard = (width: number, height: number, mineCount: number): Board => {
-  // First, create a blank board
+export const createBoard = (
+  width: number,
+  height: number,
+  mineCount: number,
+  firstClickX: number,
+  firstClickY: number
+): Board => {
   const board: Board = Array.from({ length: height }, () =>
     Array.from({ length: width }, () => ({
       isMine: false,
@@ -22,9 +27,72 @@ export const createBoard = (width: number, height: number, mineCount: number): B
     }))
   );
 
-  // This is a placeholder.
-  // Mine placement and adjacent mine calculation will be implemented later.
-  // For now, it just returns a blank board.
+  // --- 1. Place mines ---
+  let minesPlaced = 0;
+  while (minesPlaced < mineCount) {
+    const x = Math.floor(Math.random() * width);
+    const y = Math.floor(Math.random() * height);
+
+    // Avoid placing mine on the first click position and its neighbors
+    const isSafeZone =
+      Math.abs(x - firstClickX) <= 1 && Math.abs(y - firstClickY) <= 1;
+
+    if (!board[y][x].isMine && !isSafeZone) {
+      board[y][x].isMine = true;
+      minesPlaced++;
+    }
+  }
+
+  // --- 2. Calculate adjacent mines for each cell ---
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      if (board[y][x].isMine) continue;
+
+      let count = 0;
+      for (let dy = -1; dy <= 1; dy++) {
+        for (let dx = -1; dx <= 1; dx++) {
+          if (dx === 0 && dy === 0) continue;
+          const nx = x + dx;
+          const ny = y + dy;
+
+          if (nx >= 0 && nx < width && ny >= 0 && ny < height && board[ny][nx].isMine) {
+            count++;
+          }
+        }
+      }
+      board[y][x].adjacentMines = count;
+    }
+  }
 
   return board;
+};
+
+export const revealCell = (board: Board, x: number, y: number): Board => {
+  const newBoard = JSON.parse(JSON.stringify(board));
+  const cell = newBoard[y][x];
+
+  if (cell.isRevealed || cell.isFlagged) {
+    return newBoard;
+  }
+
+  cell.isRevealed = true;
+
+  if (cell.adjacentMines === 0 && !cell.isMine) {
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dx = -1; dx <= 1; dx++) {
+        if (dx === 0 && dy === 0) continue;
+        const nx = x + dx;
+        const ny = y + dy;
+
+        if (nx >= 0 && nx < newBoard[0].length && ny >= 0 && ny < newBoard.length) {
+          // We need to pass the modified board to the recursive call
+          const recursivelyRevealedBoard = revealCell(newBoard, nx, ny);
+          // And then update the newBoard with the result of the recursive call
+          Object.assign(newBoard, recursivelyRevealedBoard);
+        }
+      }
+    }
+  }
+
+  return newBoard;
 };
