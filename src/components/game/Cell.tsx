@@ -5,10 +5,11 @@ import { CellState } from '@/lib/minesweeper';
 type CellProps = {
   cell: CellState;
   onClick: () => void;
+  onAuxClick: () => void;
   onContextMenu: (e: React.MouseEvent) => void;
 };
 
-const Cell: React.FC<CellProps> = ({ cell, onClick, onContextMenu }) => {
+const Cell: React.FC<CellProps> = ({ cell, onClick, onAuxClick, onContextMenu }) => {
   const getNumberColor = (num: number) => {
     switch (num) {
       case 1: return 'text-blue-500';
@@ -48,6 +49,7 @@ const Cell: React.FC<CellProps> = ({ cell, onClick, onContextMenu }) => {
     <div
       className={cellStyle}
       onClick={onClick}
+      onAuxClick={onAuxClick}
       onContextMenu={onContextMenu}
     >
       {renderContent()}

@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Board as BoardType, CellState, createBoard, revealCell } from '@/lib/minesweeper';
+import { Board as BoardType, CellState, createBoard, revealCell, chordCell } from '@/lib/minesweeper';
 import { Difficulty, DIFFICULTY_SETTINGS } from '@/types';
 import Board from './Board';
 import DifficultySelector from './DifficultySelector';
@@ -50,29 +50,39 @@ const Game: React.FC = () => {
     return currentBoard.every(row => row.every(cell => cell.isMine || cell.isRevealed));
   };
 
-  const handleCellClick = (x: number, y: number) => {
-    if (gameState !== 'playing') return;
-
-    let currentBoard = board;
-    if (isFirstClick) {
-      const settings = DIFFICULTY_SETTINGS[difficulty];
-      currentBoard = createBoard(settings.width, settings.height, settings.mineCount, x, y);
-      setIsFirstClick(false);
-    }
-
-    const newBoard = revealCell(currentBoard, x, y);
-
-    if (newBoard[y][x].isMine && newBoard[y][x].isRevealed) {
-      setGameState('lost');
-      const finalBoard = newBoard.map(row => row.map(cell => cell.isMine ? { ...cell, isRevealed: true } : cell));
-      setBoard(finalBoard);
-      return;
-    }
-
+  const updateBoardState = (newBoard: BoardType) => {
     if (checkWinCondition(newBoard)) {
       setGameState('won');
     }
     setBoard(newBoard);
+  }
+
+  const handleCellClick = (x: number, y: number) => {
+    if (gameState !== 'playing') return;
+
+    if (isFirstClick) {
+      const settings = DIFFICULTY_SETTINGS[difficulty];
+      const newBoard = createBoard(settings.width, settings.height, settings.mineCount, x, y);
+      const revealedBoard = revealCell(newBoard, x, y);
+      setIsFirstClick(false);
+      updateBoardState(revealedBoard);
+      return;
+    }
+    
+    const cell = board[y][x];
+    if (cell.isRevealed) {
+      const newBoard = chordCell(board, x, y);
+      updateBoardState(newBoard);
+    } else {
+      const newBoard = revealCell(board, x, y);
+      if (newBoard[y][x].isMine && newBoard[y][x].isRevealed) {
+        setGameState('lost');
+        const finalBoard = newBoard.map(row => row.map(cell => cell.isMine ? { ...cell, isRevealed: true } : cell));
+        setBoard(finalBoard);
+        return;
+      }
+      updateBoardState(newBoard);
+    }
   };
 
   const handleCellContextMenu = (e: React.MouseEvent, x: number, y: number) => {
@@ -108,7 +118,8 @@ const Game: React.FC = () => {
         <Board 
           board={board} 
           gameState={gameState}
-          onCellClick={handleCellClick} 
+          onCellClick={handleCellClick}
+          onCellAuxClick={handleCellClick}
           onCellContextMenu={handleCellContextMenu} 
           onPlayAgain={initializeBoard}
         />

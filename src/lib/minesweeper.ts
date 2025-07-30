@@ -33,7 +33,6 @@ export const createBoard = (
     const x = Math.floor(Math.random() * width);
     const y = Math.floor(Math.random() * height);
 
-    // Avoid placing mine on the first click position and its neighbors
     const isSafeZone =
       Math.abs(x - firstClickX) <= 1 && Math.abs(y - firstClickY) <= 1;
 
@@ -47,14 +46,12 @@ export const createBoard = (
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (board[y][x].isMine) continue;
-
       let count = 0;
       for (let dy = -1; dy <= 1; dy++) {
         for (let dx = -1; dx <= 1; dx++) {
           if (dx === 0 && dy === 0) continue;
           const nx = x + dx;
           const ny = y + dy;
-
           if (nx >= 0 && nx < width && ny >= 0 && ny < height && board[ny][nx].isMine) {
             count++;
           }
@@ -68,7 +65,7 @@ export const createBoard = (
 };
 
 export const revealCell = (board: Board, x: number, y: number): Board => {
-  const newBoard = JSON.parse(JSON.stringify(board));
+  let newBoard = JSON.parse(JSON.stringify(board));
   const cell = newBoard[y][x];
 
   if (cell.isRevealed || cell.isFlagged) {
@@ -85,10 +82,43 @@ export const revealCell = (board: Board, x: number, y: number): Board => {
         const ny = y + dy;
 
         if (nx >= 0 && nx < newBoard[0].length && ny >= 0 && ny < newBoard.length) {
-          // We need to pass the modified board to the recursive call
-          const recursivelyRevealedBoard = revealCell(newBoard, nx, ny);
-          // And then update the newBoard with the result of the recursive call
-          Object.assign(newBoard, recursivelyRevealedBoard);
+          newBoard = revealCell(newBoard, nx, ny);
+        }
+      }
+    }
+  }
+
+  return newBoard;
+};
+
+export const chordCell = (board: Board, x: number, y: number): Board => {
+  let newBoard = JSON.parse(JSON.stringify(board));
+  const cell = newBoard[y][x];
+
+  if (!cell.isRevealed || cell.adjacentMines === 0) {
+    return newBoard;
+  }
+
+  let flagCount = 0;
+  for (let dy = -1; dy <= 1; dy++) {
+    for (let dx = -1; dx <= 1; dx++) {
+      if (dx === 0 && dy === 0) continue;
+      const nx = x + dx;
+      const ny = y + dy;
+      if (nx >= 0 && nx < newBoard[0].length && ny >= 0 && ny < newBoard.length && newBoard[ny][nx].isFlagged) {
+        flagCount++;
+      }
+    }
+  }
+
+  if (flagCount === cell.adjacentMines) {
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dx = -1; dx <= 1; dx++) {
+        if (dx === 0 && dy === 0) continue;
+        const nx = x + dx;
+        const ny = y + dy;
+        if (nx >= 0 && nx < newBoard[0].length && ny >= 0 && ny < newBoard.length && !newBoard[ny][nx].isFlagged) {
+          newBoard = revealCell(newBoard, nx, ny);
         }
       }
     }
