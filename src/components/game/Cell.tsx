@@ -4,12 +4,13 @@ import { CellState } from '@/lib/minesweeper';
 
 type CellProps = {
   cell: CellState;
+  isFocused: boolean;
   onClick: () => void;
   onAuxClick: () => void;
   onContextMenu: (e: React.MouseEvent) => void;
 };
 
-const Cell: React.FC<CellProps> = ({ cell, onClick, onAuxClick, onContextMenu }) => {
+const Cell: React.FC<CellProps> = ({ cell, isFocused, onClick, onAuxClick, onContextMenu }) => {
   const getNumberColor = (num: number) => {
     switch (num) {
       case 1: return 'text-blue-500';
@@ -41,9 +42,12 @@ const Cell: React.FC<CellProps> = ({ cell, onClick, onAuxClick, onContextMenu })
     return null;
   };
 
-  const cellStyle = cell.isRevealed
-    ? 'w-8 h-8 border border-gray-400 flex items-center justify-center bg-gray-200'
-    : 'w-8 h-8 border border-gray-400 flex items-center justify-center bg-gray-300 hover:bg-gray-200 cursor-pointer';
+  const baseStyle = 'w-8 h-8 border flex items-center justify-center';
+  const revealedStyle = 'border-gray-400 bg-gray-200';
+  const unrevealedStyle = 'border-gray-400 bg-gray-300 hover:bg-gray-200 cursor-pointer';
+  const focusStyle = isFocused ? 'ring-2 ring-blue-500 z-10' : '';
+
+  const cellStyle = `${baseStyle} ${cell.isRevealed ? revealedStyle : unrevealedStyle} ${focusStyle}`;
 
   return (
     <div

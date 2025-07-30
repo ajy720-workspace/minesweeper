@@ -17,6 +17,7 @@ const Game: React.FC = () => {
   const [isFirstClick, setIsFirstClick] = useState(true);
   const [remainingMines, setRemainingMines] = useState(DIFFICULTY_SETTINGS.beginner.mineCount);
   const [timer, setTimer] = useState(0);
+  const [focusedCell, setFocusedCell] = useState<{ x: number; y: number } | null>(null);
 
   const initializeBoard = useCallback(() => {
     const settings = DIFFICULTY_SETTINGS[difficulty];
@@ -30,6 +31,7 @@ const Game: React.FC = () => {
     setIsFirstClick(true);
     setRemainingMines(settings.mineCount);
     setTimer(0);
+    setFocusedCell({ x: 0, y: 0 });
   }, [difficulty]);
 
   useEffect(() => {
@@ -58,7 +60,7 @@ const Game: React.FC = () => {
   }
 
   const handleCellClick = (x: number, y: number) => {
-    if (gameState !== 'playing') return;
+    if (gameState !== 'playing' || !board[y]?.[x]) return;
 
     if (isFirstClick) {
       const settings = DIFFICULTY_SETTINGS[difficulty];
@@ -85,9 +87,8 @@ const Game: React.FC = () => {
     }
   };
 
-  const handleCellContextMenu = (e: React.MouseEvent, x: number, y: number) => {
-    e.preventDefault();
-    if (gameState !== 'playing' || isFirstClick) return;
+  const toggleMark = (x: number, y: number) => {
+    if (gameState !== 'playing' || isFirstClick || !board[y]?.[x]) return;
 
     const newBoard = JSON.parse(JSON.stringify(board));
     const cell = newBoard[y][x];
@@ -106,9 +107,62 @@ const Game: React.FC = () => {
     setBoard(newBoard);
   };
 
+  const handleCellContextMenu = (e: React.MouseEvent, x: number, y: number) => {
+    e.preventDefault();
+    toggleMark(x, y);
+  };
+
   const handleDifficultyChange = (newDifficulty: Difficulty) => {
     setDifficulty(newDifficulty);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!focusedCell) return;
+
+      const { x, y } = focusedCell;
+      const settings = DIFFICULTY_SETTINGS[difficulty];
+
+      switch (e.key) {
+        case 'ArrowUp':
+          setFocusedCell({ x, y: Math.max(0, y - 1) });
+          break;
+        case 'ArrowDown':
+          setFocusedCell({ x, y: Math.min(settings.height - 1, y + 1) });
+          break;
+        case 'ArrowLeft':
+          setFocusedCell({ x: Math.max(0, x - 1), y });
+          break;
+        case 'ArrowRight':
+          setFocusedCell({ x: Math.min(settings.width - 1, x + 1), y });
+          break;
+        case ' ': // Spacebar
+          e.preventDefault();
+          if (e.shiftKey) {
+            // Chord on Shift+Space
+            if (board[y]?.[x]?.isRevealed) {
+              const newBoard = chordCell(board, x, y);
+              updateBoardState(newBoard);
+            }
+          } else {
+            handleCellClick(x, y);
+          }
+          break;
+        case 'f':
+        case '1':
+          toggleMark(x, y);
+          break;
+        case 'q':
+        case '2':
+          toggleMark(x, y);
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [focusedCell, board, difficulty, gameState]);
+
 
   return (
     <div className="flex flex-col items-center">
@@ -118,6 +172,7 @@ const Game: React.FC = () => {
         <Board 
           board={board} 
           gameState={gameState}
+          focusedCell={focusedCell}
           onCellClick={handleCellClick}
           onCellAuxClick={handleCellClick}
           onCellContextMenu={handleCellContextMenu} 
