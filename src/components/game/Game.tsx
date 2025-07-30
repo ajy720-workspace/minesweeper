@@ -17,6 +17,7 @@ const Game: React.FC = () => {
   const [isFirstClick, setIsFirstClick] = useState(true);
   const [remainingMines, setRemainingMines] = useState(DIFFICULTY_SETTINGS.beginner.mineCount);
   const [timer, setTimer] = useState(0);
+  const [score, setScore] = useState(0);
   const [focusedCell, setFocusedCell] = useState<{ x: number; y: number } | null>(null);
 
   const initializeBoard = useCallback(() => {
@@ -31,6 +32,7 @@ const Game: React.FC = () => {
     setIsFirstClick(true);
     setRemainingMines(settings.mineCount);
     setTimer(0);
+    setScore(0);
     setFocusedCell({ x: 0, y: 0 });
   }, [difficulty]);
 
@@ -55,6 +57,7 @@ const Game: React.FC = () => {
   const updateBoardState = (newBoard: BoardType) => {
     if (checkWinCondition(newBoard)) {
       setGameState('won');
+      setScore(prev => prev + 500); // Win bonus
     }
     setBoard(newBoard);
   }
@@ -67,6 +70,7 @@ const Game: React.FC = () => {
       const newBoard = createBoard(settings.width, settings.height, settings.mineCount, x, y);
       const revealedBoard = revealCell(newBoard, x, y);
       setIsFirstClick(false);
+      setScore(prev => prev + 10); // First click score
       updateBoardState(revealedBoard);
       return;
     }
@@ -74,6 +78,10 @@ const Game: React.FC = () => {
     const cell = board[y][x];
     if (cell.isRevealed) {
       const newBoard = chordCell(board, x, y);
+      // Check if chord action revealed any new cells
+      if (JSON.stringify(board) !== JSON.stringify(newBoard)) {
+        setScore(prev => prev + 50); // Chord click bonus
+      }
       updateBoardState(newBoard);
     } else {
       const newBoard = revealCell(board, x, y);
@@ -83,6 +91,7 @@ const Game: React.FC = () => {
         setBoard(finalBoard);
         return;
       }
+      setScore(prev => prev + 10); // Regular click score
       updateBoardState(newBoard);
     }
   };
@@ -97,10 +106,12 @@ const Game: React.FC = () => {
     if (!cell.isFlagged && !cell.isQuestioned) {
       cell.isFlagged = true;
       setRemainingMines(prev => prev - 1);
+      setScore(prev => prev - 5); // Flag penalty
     } else if (cell.isFlagged) {
       cell.isFlagged = false;
       cell.isQuestioned = true;
       setRemainingMines(prev => prev + 1);
+      setScore(prev => prev + 5); // Remove flag bonus
     } else if (cell.isQuestioned) {
       cell.isQuestioned = false;
     }
@@ -139,9 +150,11 @@ const Game: React.FC = () => {
         case ' ': // Spacebar
           e.preventDefault();
           if (e.shiftKey) {
-            // Chord on Shift+Space
             if (board[y]?.[x]?.isRevealed) {
               const newBoard = chordCell(board, x, y);
+              if (JSON.stringify(board) !== JSON.stringify(newBoard)) {
+                setScore(prev => prev + 50);
+              }
               updateBoardState(newBoard);
             }
           } else {
@@ -168,7 +181,7 @@ const Game: React.FC = () => {
     <div className="flex flex-col items-center">
       <DifficultySelector onSelectDifficulty={handleDifficultyChange} currentDifficulty={difficulty} />
       <div className="inline-block border-4 border-gray-500 bg-gray-400 p-1">
-        <GameInfoBar remainingMines={remainingMines} timer={timer} />
+        <GameInfoBar remainingMines={remainingMines} timer={timer} score={score} />
         <Board 
           board={board} 
           gameState={gameState}
