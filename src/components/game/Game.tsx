@@ -8,7 +8,7 @@ import Board from './Board';
 import DifficultySelector from './DifficultySelector';
 import GameInfoBar from './GameInfoBar';
 import { loginOrRegister, saveGameRecord } from '@/app/auth/actions';
-import { AuthModal } from '../auth/AuthModal';
+import { GameResultModal } from './GameResultModal';
 
 type GameState = 'playing' | 'won' | 'lost';
 
@@ -25,7 +25,8 @@ const Game: React.FC<GameProps> = ({ session }) => {
   const [timer, setTimer] = useState(0);
   const [score, setScore] = useState(0);
   const [focusedCell, setFocusedCell] = useState<{ x: number; y: number } | null>(null);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
 
   const initializeBoard = useCallback(() => {
     const settings = DIFFICULTY_SETTINGS[difficulty];
@@ -49,7 +50,8 @@ const Game: React.FC<GameProps> = ({ session }) => {
     setTimer(0);
     setScore(0);
     setFocusedCell({ x: 0, y: 0 });
-    setIsAuthModalOpen(false);
+    setIsResultModalOpen(false);
+    setSaveStatus('idle');
   }, [difficulty]);
 
   useEffect(() => {
@@ -68,18 +70,19 @@ const Game: React.FC<GameProps> = ({ session }) => {
 
   const handleSaveRecord = useCallback(
     async (username: string, password?: string) => {
+      setSaveStatus('saving');
       let userId: number;
 
       if (session) {
         userId = session.id;
       } else {
         if (!password) {
-          alert('Password is required.');
+          setSaveStatus('error');
           return;
         }
         const result = await loginOrRegister(username, password);
         if (result.error || !result.user) {
-          alert(result.error || 'Failed to login or register.');
+          setSaveStatus('error');
           return;
         }
         userId = result.user.id;
@@ -94,21 +97,20 @@ const Game: React.FC<GameProps> = ({ session }) => {
 
       const saveResult = await saveGameRecord(userId, gameData);
       if (saveResult.error) {
-        alert(saveResult.error);
+        setSaveStatus('error');
       } else {
-        alert('Score saved successfully!');
-        setIsAuthModalOpen(false);
-        initializeBoard();
+        setSaveStatus('saved');
       }
     },
-    [session, difficulty, gameState, timer, score, initializeBoard],
+    [session, difficulty, gameState, timer, score],
   );
 
   useEffect(() => {
-    if ((gameState === 'won' || gameState === 'lost') && !session) {
-      setIsAuthModalOpen(true);
-    } else if ((gameState === 'won' || gameState === 'lost') && session) {
-      handleSaveRecord(session.username);
+    if (gameState === 'won' || gameState === 'lost') {
+      setIsResultModalOpen(true);
+      if (session) {
+        handleSaveRecord(session.username);
+      }
     }
   }, [gameState, session, handleSaveRecord]);
 
@@ -202,7 +204,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (isAuthModalOpen || !focusedCell) return;
+      if (isResultModalOpen || !focusedCell) return;
 
       const { x, y } = focusedCell;
       const settings = DIFFICULTY_SETTINGS[difficulty];
@@ -253,7 +255,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [focusedCell, board, difficulty, handleCellClick, toggleMark, updateBoardState, isAuthModalOpen]);
+  }, [focusedCell, board, difficulty, handleCellClick, toggleMark, updateBoardState, isResultModalOpen]);
 
   return (
     <div className="flex flex-col items-center px-2 sm:px-4">
@@ -272,12 +274,15 @@ const Game: React.FC<GameProps> = ({ session }) => {
           />
         </div>
       </div>
-      {isAuthModalOpen && (
-        <AuthModal
-          isOpen={isAuthModalOpen}
-          onClose={() => setIsAuthModalOpen(false)}
+      {isResultModalOpen && (
+        <GameResultModal
+          isOpen={isResultModalOpen}
+          onClose={() => setIsResultModalOpen(false)}
           gameResult={{ status: gameState as 'won' | 'lost', time: timer, score, difficulty }}
-          onSaveRecord={handleSaveRecord}
+          session={session}
+          onSaveRecord={!session ? handleSaveRecord : undefined}
+          onPlayAgain={initializeBoard}
+          saveStatus={saveStatus}
         />
       )}
     </div>
