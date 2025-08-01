@@ -1,10 +1,12 @@
 import Game from '@/components/game/Game';
+import { getSession } from '@/lib/session';
 
-export default function Home() {
+export default async function HomePage() {
+  const session = await getSession();
+
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen py-8">
-      <h1 className="text-5xl font-bold mb-6">Minesweeper</h1>
-      <Game />
+    <div>
+      <Game session={session} />
     </div>
   );
 }

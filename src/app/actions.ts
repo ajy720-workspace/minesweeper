@@ -3,6 +3,14 @@
 import { createClient } from '@/lib/supabase/server';
 import { Database } from '@/types/supabase';
 import bcrypt from 'bcryptjs';
+import { login } from '@/lib/session';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+
+export async function logout() {
+  (await cookies()).set('session', '', { expires: new Date(0) });
+  redirect('/');
+}
 
 export async function loginOrRegister(username: string, password?: string) {
   const supabase = await createClient();
@@ -25,6 +33,7 @@ export async function loginOrRegister(username: string, password?: string) {
     if (!passwordMatch) {
       return { error: 'Invalid password.' };
     }
+    await login({ id: user.id, username: user.username });
     return { user };
   } else {
     // User does not exist, create new user
@@ -42,6 +51,7 @@ export async function loginOrRegister(username: string, password?: string) {
       console.error('Error creating user:', createError);
       return { error: 'Database error while creating user.' };
     }
+    await login({ id: newUser.id, username: newUser.username });
     return { user: newUser };
   }
 }
