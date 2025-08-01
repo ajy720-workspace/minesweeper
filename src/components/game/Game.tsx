@@ -7,7 +7,7 @@ import { Difficulty, DIFFICULTY_SETTINGS } from '@/types';
 import Board from './Board';
 import DifficultySelector from './DifficultySelector';
 import GameInfoBar from './GameInfoBar';
-import { loginOrRegister, saveGameRecord } from '@/app/actions';
+import { loginOrRegister, saveGameRecord } from '@/app/auth/actions';
 import { AuthModal } from '../auth/AuthModal';
 
 type GameState = 'playing' | 'won' | 'lost';

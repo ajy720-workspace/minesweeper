@@ -78,7 +78,25 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      get_ranking: {
+        Args: { p_difficulty: string };
+        Returns: {
+          rank: number;
+          username: string;
+          clear_time_ms: number;
+          score: number;
+          played_at: string;
+        }[];
+      };
+      get_user_ranking_stats: {
+        Args: { p_user_id: number; p_difficulty: string };
+        Returns: {
+          best_time_ms: number;
+          user_rank: number;
+          total_players: number;
+          percentile: number;
+        }[];
+      };
     };
     Enums: {
       [_ in never]: never;

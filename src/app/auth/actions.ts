@@ -15,17 +15,14 @@ export async function logout() {
 export async function loginOrRegister(username: string, password?: string) {
   const supabase = await createClient();
 
-  // Find user by username
   const { data: user, error: findError } = await supabase.from('users').select('*').eq('username', username).single();
 
   if (findError && findError.code !== 'PGRST116') {
-    // PGRST116 is "No rows found"
     console.error('Error finding user:', findError);
     return { error: 'Database error while finding user.' };
   }
 
   if (user) {
-    // User exists, check password
     if (!password) {
       return { error: 'Password is required for existing users.' };
     }
@@ -36,7 +33,6 @@ export async function loginOrRegister(username: string, password?: string) {
     await login({ id: user.id, username: user.username });
     return { user };
   } else {
-    // User does not exist, create new user
     if (!password) {
       return { error: 'Password is required to create a new user.' };
     }
