@@ -58,75 +58,84 @@ const Game: React.FC = () => {
     return () => clearInterval(interval);
   }, [gameState, isFirstClick]);
 
-  const checkWinCondition = (currentBoard: BoardType): boolean => {
+  const checkWinCondition = useCallback((currentBoard: BoardType): boolean => {
     return currentBoard.every((row) => row.every((cell) => cell.isMine || cell.isRevealed));
-  };
+  }, []);
 
-  const updateBoardState = (newBoard: BoardType) => {
-    if (checkWinCondition(newBoard)) {
-      setGameState('won');
-      setScore((prev) => prev + 500); // Win bonus
-    }
-    setBoard(newBoard);
-  };
-
-  const handleCellClick = (x: number, y: number) => {
-    if (gameState !== 'playing' || !board[y]?.[x]) return;
-
-    if (isFirstClick) {
-      const settings = DIFFICULTY_SETTINGS[difficulty];
-      const newBoard = createBoard(settings.width, settings.height, settings.mineCount, x, y);
-      const revealedBoard = revealCell(newBoard, x, y);
-      setIsFirstClick(false);
-      setScore((prev) => prev + 10); // First click score
-      updateBoardState(revealedBoard);
-      return;
-    }
-
-    const cell = board[y][x];
-    if (cell.isRevealed) {
-      const newBoard = chordCell(board, x, y);
-      // Check if chord action revealed any new cells
-      if (JSON.stringify(board) !== JSON.stringify(newBoard)) {
-        setScore((prev) => prev + 50); // Chord click bonus
+  const updateBoardState = useCallback(
+    (newBoard: BoardType) => {
+      if (checkWinCondition(newBoard)) {
+        setGameState('won');
+        setScore((prev) => prev + 500); // Win bonus
       }
-      updateBoardState(newBoard);
-    } else {
-      const newBoard = revealCell(board, x, y);
-      if (newBoard[y][x].isMine && newBoard[y][x].isRevealed) {
-        setGameState('lost');
-        const finalBoard = newBoard.map((row) =>
-          row.map((cell) => (cell.isMine ? { ...cell, isRevealed: true } : cell)),
-        );
-        setBoard(finalBoard);
+      setBoard(newBoard);
+    },
+    [checkWinCondition],
+  );
+
+  const handleCellClick = useCallback(
+    (x: number, y: number) => {
+      if (gameState !== 'playing' || !board[y]?.[x]) return;
+
+      if (isFirstClick) {
+        const settings = DIFFICULTY_SETTINGS[difficulty];
+        const newBoard = createBoard(settings.width, settings.height, settings.mineCount, x, y);
+        const revealedBoard = revealCell(newBoard, x, y);
+        setIsFirstClick(false);
+        setScore((prev) => prev + 10); // First click score
+        updateBoardState(revealedBoard);
         return;
       }
-      setScore((prev) => prev + 10); // Regular click score
-      updateBoardState(newBoard);
-    }
-  };
 
-  const toggleMark = (x: number, y: number) => {
-    if (gameState !== 'playing' || isFirstClick || !board[y]?.[x]) return;
+      const cell = board[y][x];
+      if (cell.isRevealed) {
+        const newBoard = chordCell(board, x, y);
+        // Check if chord action revealed any new cells
+        if (JSON.stringify(board) !== JSON.stringify(newBoard)) {
+          setScore((prev) => prev + 50); // Chord click bonus
+        }
+        updateBoardState(newBoard);
+      } else {
+        const newBoard = revealCell(board, x, y);
+        if (newBoard[y][x].isMine && newBoard[y][x].isRevealed) {
+          setGameState('lost');
+          const finalBoard = newBoard.map((row) =>
+            row.map((cell) => (cell.isMine ? { ...cell, isRevealed: true } : cell)),
+          );
+          setBoard(finalBoard);
+          return;
+        }
+        setScore((prev) => prev + 10); // Regular click score
+        updateBoardState(newBoard);
+      }
+    },
+    [gameState, board, isFirstClick, difficulty, updateBoardState],
+  );
 
-    const newBoard = JSON.parse(JSON.stringify(board));
-    const cell = newBoard[y][x];
-    if (cell.isRevealed) return;
+  const toggleMark = useCallback(
+    (x: number, y: number) => {
+      if (gameState !== 'playing' || isFirstClick || !board[y]?.[x]) return;
 
-    if (!cell.isFlagged && !cell.isQuestioned) {
-      cell.isFlagged = true;
-      setRemainingMines((prev) => prev - 1);
-      setScore((prev) => prev - 5); // Flag penalty
-    } else if (cell.isFlagged) {
-      cell.isFlagged = false;
-      cell.isQuestioned = true;
-      setRemainingMines((prev) => prev + 1);
-      setScore((prev) => prev + 5); // Remove flag bonus
-    } else if (cell.isQuestioned) {
-      cell.isQuestioned = false;
-    }
-    setBoard(newBoard);
-  };
+      const newBoard = JSON.parse(JSON.stringify(board));
+      const cell = newBoard[y][x];
+      if (cell.isRevealed) return;
+
+      if (!cell.isFlagged && !cell.isQuestioned) {
+        cell.isFlagged = true;
+        setRemainingMines((prev) => prev - 1);
+        setScore((prev) => prev - 5); // Flag penalty
+      } else if (cell.isFlagged) {
+        cell.isFlagged = false;
+        cell.isQuestioned = true;
+        setRemainingMines((prev) => prev + 1);
+        setScore((prev) => prev + 5); // Remove flag bonus
+      } else if (cell.isQuestioned) {
+        cell.isQuestioned = false;
+      }
+      setBoard(newBoard);
+    },
+    [gameState, isFirstClick, board],
+  );
 
   const handleCellContextMenu = (e: React.MouseEvent, x: number, y: number) => {
     e.preventDefault();
@@ -146,15 +155,19 @@ const Game: React.FC = () => {
 
       switch (e.key) {
         case 'ArrowUp':
+          e.preventDefault();
           setFocusedCell({ x, y: Math.max(0, y - 1) });
           break;
         case 'ArrowDown':
+          e.preventDefault();
           setFocusedCell({ x, y: Math.min(settings.height - 1, y + 1) });
           break;
         case 'ArrowLeft':
+          e.preventDefault();
           setFocusedCell({ x: Math.max(0, x - 1), y });
           break;
         case 'ArrowRight':
+          e.preventDefault();
           setFocusedCell({ x: Math.min(settings.width - 1, x + 1), y });
           break;
         case ' ': // Spacebar
@@ -173,10 +186,12 @@ const Game: React.FC = () => {
           break;
         case 'f':
         case '1':
+          e.preventDefault();
           toggleMark(x, y);
           break;
         case 'q':
         case '2':
+          e.preventDefault();
           toggleMark(x, y);
           break;
       }
@@ -184,7 +199,7 @@ const Game: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [focusedCell, board, difficulty, gameState]);
+  }, [focusedCell, board, difficulty, handleCellClick, toggleMark, updateBoardState]);
 
   return (
     <div className="flex flex-col items-center">

@@ -2,7 +2,7 @@
   "theme": "Dracula",
   "selectedAuthType": "gemini-api-key",
 
-  "contextFileName": ["Instruction.md", "PRD.md"],
+  "contextFileName": ["Instruction.md", "PRD.md", "Convention.md"],
 
   "checkpointing": {
     "enabled": true
