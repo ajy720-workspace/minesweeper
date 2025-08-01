@@ -2,7 +2,7 @@
 
 ## 1. 개요
 
-React.js(TypeScript), Supabase, TailwindCSS 기술 스택을 활용하여 웹 브라우저에서 즐길 수 있는 지뢰찾기 게임을 개발한다. 사용자는 다양한 난이도의 게임을 플레이하고, 자신의 기록을 저장하며, 다른 사용자들과의 랭킹을 확인할 수 있다. 비로그인 사용자도 게임 플레이가 가능하며, 게임 종료 후 간단한 로그인/회원가입을 통해 기록을 저장할 수 있는 심플한 UX를 제공하는 것을 목표로 한다.
+Next.js(TypeScript), Supabase, TailwindCSS 기술 스택을 활용하여 웹 브라우저에서 즐길 수 있는 지뢰찾기 게임을 개발한다. 사용자는 다양한 난이도의 게임을 플레이하고, 자신의 기록을 저장하며, 다른 사용자들과의 랭킹을 확인할 수 있다. 비로그인 사용자도 게임 플레이가 가능하며, 게임 종료 후 간단한 로그인/회원가입을 통해 기록을 저장할 수 있는 심플한 UX를 제공하는 것을 목표로 한다.
 
 - **Tech Stack:** Next.js (TypeScript), Supabase, TailwindCSS
 - **Target:** 웹 기반 지뢰찾기 게임 플랫폼
@@ -11,42 +11,25 @@ React.js(TypeScript), Supabase, TailwindCSS 기술 스택을 활용하여 웹 �
 
 ## 2. 데이터 모델 (Supabase Tables)
 
-### `users`
+### 유저 테이블
 
-사용자 정보를 저장한다. Supabase Auth와 연동된다.
+사용자 정보를 저장한다. 간단한 인증을 위해 username과 password만을 이용한 인증 시스템을 사용한다.
 
-| Column | Type | Description |
-| --- | --- | --- |
-| `id` | `uuid` | 사용자 고유 ID (Auth 연동, PK) |
-| `username` | `text` | 사용자 이름 (Unique) |
-| `created_at` | `timestampz` | 가입일시 |
+필드 : 유저 이름(PK), 패스워드, 생성 시간
 
-### `game_records`
+### 게임 기록 테이블
 
 사용자의 모든 게임 플레이 기록을 저장한다.
 
-| Column | Type | Description |
-| --- | --- | --- |
-| `id` | `uuid` | 플레이 기록 고유 ID (PK) |
-| `user_id` | `uuid` | 플레이한 사용자 ID (FK, `users.id`, 비로그인 플레이 시 NULL) |
-| `difficulty` | `text` | 난이도 ('beginner', 'intermediate', 'expert', 'custom') |
-| `is_win` | `boolean` | 게임 승리 여부 |
-| `clear_time_ms` | `integer` | 클리어 시간 (밀리초 단위, 패배 시 NULL) |
-| `score` | `integer` | 상호작용 기반의 독립적인 점수 |
-| `board_width` | `integer` | 게임 보드 가로 크기 |
-| `board_height` | `integer` | 게임 보드 세로 크기 |
-| `mine_count` | `integer` | 지뢰 개수 |
-| `played_at` | `timestampz` | 플레이 시작 일시 |
-
----
+필드 : 유저 이름(FK), 난이도, 승리 여부, 클리어 타임, 점수, 보드 사이즈(for custom game), 지뢰 갯수(for custom game), 플레이 일시
 
 ## 3. 페이지 및 라우팅
 
-| Path | Page | Description |
-| --- | --- | --- |
-| `/` | 메인 게임 페이지 | 난이도 선택 및 지뢰찾기 게임 플레이 |
-| `/ranking` | 랭킹 리더보드 | 난이도별 클리어 시간 및 점수 랭킹 표시 |
-| `/profile` | 내 기록 페이지 | 로그인한 사용자의 개인 플레이 기록 및 통계 확인 |
+| Path       | Page             | Description                                     |
+| ---------- | ---------------- | ----------------------------------------------- |
+| `/`        | 메인 게임 페이지 | 난이도 선택 및 지뢰찾기 게임 플레이             |
+| `/ranking` | 랭킹 리더보드    | 난이도별 클리어 시간 및 점수 랭킹 표시          |
+| `/profile` | 내 기록 페이지   | 로그인한 사용자의 개인 플레이 기록 및 통계 확인 |
 
 ---
 

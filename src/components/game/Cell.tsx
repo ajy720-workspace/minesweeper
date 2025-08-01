@@ -11,15 +11,24 @@ type CellProps = {
 const Cell: React.FC<CellProps> = ({ cell, isFocused, onMouseDown }) => {
   const getNumberColor = (num: number) => {
     switch (num) {
-      case 1: return 'text-blue-500';
-      case 2: return 'text-green-500';
-      case 3: return 'text-red-500';
-      case 4: return 'text-purple-500';
-      case 5: return 'text-maroon-500';
-      case 6: return 'text-turquoise-500';
-      case 7: return 'text-black';
-      case 8: return 'text-gray-500';
-      default: return '';
+      case 1:
+        return 'text-blue-500';
+      case 2:
+        return 'text-green-500';
+      case 3:
+        return 'text-red-500';
+      case 4:
+        return 'text-purple-500';
+      case 5:
+        return 'text-maroon-500';
+      case 6:
+        return 'text-turquoise-500';
+      case 7:
+        return 'text-black';
+      case 8:
+        return 'text-gray-500';
+      default:
+        return '';
     }
   };
 
@@ -31,11 +40,7 @@ const Cell: React.FC<CellProps> = ({ cell, isFocused, onMouseDown }) => {
     }
     if (cell.isMine) return '💣';
     if (cell.adjacentMines > 0) {
-      return (
-        <span className={`font-bold ${getNumberColor(cell.adjacentMines)}`}>
-          {cell.adjacentMines}
-        </span>
-      );
+      return <span className={`font-bold ${getNumberColor(cell.adjacentMines)}`}>{cell.adjacentMines}</span>;
     }
     return null;
   };

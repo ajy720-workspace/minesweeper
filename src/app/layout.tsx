@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import "./globals.css";
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "Minesweeper",
-  description: "Minesweeper game built with Next.js",
+  title: 'Minesweeper',
+  description: 'Minesweeper game built with Next.js',
 };
 
 export default function RootLayout({

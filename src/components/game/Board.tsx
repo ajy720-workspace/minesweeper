@@ -15,7 +15,15 @@ type BoardProps = {
   onPlayAgain: () => void;
 };
 
-const Board: React.FC<BoardProps> = ({ board, gameState, focusedCell, onCellClick, onCellAuxClick, onCellContextMenu, onPlayAgain }) => {
+const Board: React.FC<BoardProps> = ({
+  board,
+  gameState,
+  focusedCell,
+  onCellClick,
+  onCellAuxClick,
+  onCellContextMenu,
+  onPlayAgain,
+}) => {
   if (board.length === 0) {
     return <div>Loading...</div>; // Or a placeholder
   }
@@ -54,13 +62,8 @@ const Board: React.FC<BoardProps> = ({ board, gameState, focusedCell, onCellClic
       </div>
       {gameState !== 'playing' && (
         <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center">
-          <div className="text-white text-5xl font-bold mb-4">
-            {gameState === 'won' ? 'You Won!' : 'Game Over!'}
-          </div>
-          <button
-            onClick={onPlayAgain}
-            className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 text-xl"
-          >
+          <div className="text-white text-5xl font-bold mb-4">{gameState === 'won' ? 'You Won!' : 'Game Over!'}</div>
+          <button onClick={onPlayAgain} className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 text-xl">
             Play Again
           </button>
         </div>

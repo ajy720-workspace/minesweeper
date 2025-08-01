@@ -11,14 +11,12 @@ const DifficultySelector: React.FC<DifficultySelectorProps> = ({ onSelectDifficu
   const difficulties: Difficulty[] = ['beginner', 'intermediate', 'expert'];
   return (
     <div className="flex justify-center space-x-4 mb-4">
-      {difficulties.map(level => (
-        <button 
+      {difficulties.map((level) => (
+        <button
           key={level}
-          onClick={() => onSelectDifficulty(level)} 
+          onClick={() => onSelectDifficulty(level)}
           className={`px-4 py-2 rounded capitalize font-semibold ${
-            currentDifficulty === level 
-              ? 'bg-blue-700 text-white' 
-              : 'bg-blue-500 text-white hover:bg-blue-600'
+            currentDifficulty === level ? 'bg-blue-700 text-white' : 'bg-blue-500 text-white hover:bg-blue-600'
           }`}
         >
           {level}

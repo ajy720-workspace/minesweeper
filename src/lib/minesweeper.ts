@@ -15,7 +15,7 @@ export const createBoard = (
   height: number,
   mineCount: number,
   firstClickX: number,
-  firstClickY: number
+  firstClickY: number,
 ): Board => {
   const board: Board = Array.from({ length: height }, () =>
     Array.from({ length: width }, () => ({
@@ -24,7 +24,7 @@ export const createBoard = (
       isFlagged: false,
       isQuestioned: false,
       adjacentMines: 0,
-    }))
+    })),
   );
 
   // --- 1. Place mines ---
@@ -33,8 +33,7 @@ export const createBoard = (
     const x = Math.floor(Math.random() * width);
     const y = Math.floor(Math.random() * height);
 
-    const isSafeZone =
-      Math.abs(x - firstClickX) <= 1 && Math.abs(y - firstClickY) <= 1;
+    const isSafeZone = Math.abs(x - firstClickX) <= 1 && Math.abs(y - firstClickY) <= 1;
 
     if (!board[y][x].isMine && !isSafeZone) {
       board[y][x].isMine = true;

@@ -8,9 +8,7 @@ type GameInfoBarProps = {
 };
 
 const InfoDisplay: React.FC<{ value: string | number }> = ({ value }) => (
-  <div className="bg-black text-red-500 px-2 py-1 font-mono text-2xl">
-    {String(value).padStart(3, '0')}
-  </div>
+  <div className="bg-black text-red-500 px-2 py-1 font-mono text-2xl">{String(value).padStart(3, '0')}</div>
 );
 
 const GameInfoBar: React.FC<GameInfoBarProps> = ({ remainingMines, timer, score }) => {
