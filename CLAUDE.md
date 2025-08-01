@@ -199,25 +199,30 @@ No test framework is currently configured. When adding tests, check the project 
 ## Token Efficiency Guidelines
 
 **File Operations:**
+
 - Use `Grep` instead of `Read` for pattern searches
 - Use `Read` with offset/limit for large files when only specific sections needed
 - Delegate complex file analysis to `Task` tool with specialized agents
 
 **Search Optimization:**
+
 - Combine `Glob` + `Grep` for multi-file searches
 - Use specific patterns rather than broad searches
 - Refine glob patterns to exclude irrelevant files
 
 **Context Management:**
+
 - Avoid re-requesting previously confirmed information
 - Reuse established file structure knowledge
 - Skip unnecessary explanations and summaries
 
 **Batch Processing:**
+
 - Execute multiple independent tool calls in single message
 - Chain related bash commands with semicolons
 
 **Response Compression:**
+
 - Minimize comments in code blocks
 - Remove redundant explanations
 - Provide concise, focused answers

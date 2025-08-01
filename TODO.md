@@ -71,18 +71,36 @@
 - [x] **셀 상호작용 효과**: hover/active 상태, scale 애니메이션, 색상 변화
 - [x] **경쟁적 플레이 지원**: 빠른 기록 갱신을 위한 키보드 반응성 우선 최적화
 
+### 디자인 시스템 통일 (완료)
+
+- [x] **전체적인 디자인 시스템 개선**
+  - [x] 하드코딩된 gray 색상을 디자인 토큰으로 교체
+  - [x] shadcn/ui Button 컴포넌트로 버튼 스타일 표준화
+  - [x] gap 유틸리티로 spacing 패턴 통일 (space-x/y 대신)
+  - [x] 타이포그래피 일관성 개선 (font-size, font-weight 표준화)
+  - [x] ARIA 라벨 및 role 속성으로 접근성 향상
+  - [x] 경쟁적 플레이를 위한 성능 최적화 유지
+
 ### 미완료 항목
 
 - [ ] 게임 로고 디자인 및 적용
-- [ ] 전체적인 디자인 시스템 개선 (일관된 버튼, 모달, 폰트 스타일 등)
 - [ ] 게임 상태(승리/패배)에 따른 명확한 사운드 이펙트 추가 (선택 사항)
 - [ ] 클리어 타임 기록할 때 ms 단위로 기록하기
 
-## 🔧 Code Quality & Refactoring
+## 🔧 Code Quality & Refactoring (완료)
 
-- [ ] `Board.tsx`에 하드코딩된 상수(너비, 높이, 지뢰 수)를 난이도 설정에 따라 동적으로 관리하도록 리팩토링
-- [ ] Supabase API 호출 관련 로직 에러 핸들링 강화
-- [ ] `lib/minesweeper.ts` 등 핵심 로직에 주석 추가하여 가독성 향상
+- [x] **Board.tsx 리팩토링**
+  - [x] 사용하지 않는 props (gameState, onPlayAgain) 제거
+  - [x] 컴포넌트 인터페이스 정리 및 최적화
+- [x] **Supabase API 호출 에러 핸들링 강화**
+  - [x] 입력 검증 로직 추가 (userId, difficulty, 패스워드 길이 등)
+  - [x] 사용자 친화적 에러 메시지로 개선
+  - [x] try-catch 블록으로 예외 처리 강화
+  - [x] 데이터베이스 제약 조건 에러 (중복 사용자명 등) 처리
+- [x] **핵심 게임 로직 문서화**
+  - [x] `lib/minesweeper.ts`에 상세한 JSDoc 주석 추가
+  - [x] 함수별 매개변수, 반환값, 동작 원리 설명
+  - [x] 알고리즘 설명 (flood-fill, chord-clicking) 보강
 
 ## 📦 v1.1 Future Features
 

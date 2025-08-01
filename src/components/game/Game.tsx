@@ -275,13 +275,11 @@ const Game: React.FC<GameProps> = ({ session }) => {
           <GameInfoBar remainingMines={remainingMines} timer={timer} score={score} />
           <Board
             board={board}
-            gameState={gameState}
             focusedCell={focusedCell}
             showKeyboardCursor={showKeyboardCursor}
             onCellClick={handleCellClick}
             onCellAuxClick={handleCellClick}
             onCellContextMenu={handleCellContextMenu}
-            onPlayAgain={initializeBoard}
           />
         </div>
       </div>

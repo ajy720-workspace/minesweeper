@@ -22,9 +22,16 @@ export async function getUserProfile(
   userId: number,
   difficulty: string,
 ): Promise<{ data: ProfileData | null; error: string | null }> {
-  const supabase = await createClient();
+  if (!userId || userId <= 0) {
+    return { error: 'Invalid user ID.', data: null };
+  }
+
+  if (!difficulty || !['beginner', 'intermediate', 'expert'].includes(difficulty)) {
+    return { error: 'Invalid difficulty level.', data: null };
+  }
 
   try {
+    const supabase = await createClient();
     // Get user's game history for the specific difficulty
     const { data: gameHistory, error: historyError } = await supabase
       .from('game_records')
@@ -36,7 +43,7 @@ export async function getUserProfile(
 
     if (historyError) {
       console.error('Error fetching game history:', historyError);
-      return { error: 'Database error while fetching game history.', data: null };
+      return { error: 'Failed to load game history. Please try again.', data: null };
     }
 
     // Calculate statistics
@@ -53,8 +60,8 @@ export async function getUserProfile(
 
     return { data: profileData, error: null };
   } catch (error) {
-    console.error('Error in getUserProfile:', error);
-    return { error: 'Failed to fetch profile data.', data: null };
+    console.error('Unexpected error in getUserProfile:', error);
+    return { error: 'An unexpected error occurred while loading profile. Please try again.', data: null };
   }
 }
 
@@ -68,9 +75,12 @@ type DifficultyStats = {
 export async function getUserOverallStats(
   userId: number,
 ): Promise<{ data: Record<string, DifficultyStats> | null; error: string | null }> {
-  const supabase = await createClient();
+  if (!userId || userId <= 0) {
+    return { error: 'Invalid user ID.', data: null };
+  }
 
   try {
+    const supabase = await createClient();
     // Get overall statistics across all difficulties
     const { data: overallStats, error } = await supabase
       .from('game_records')
@@ -79,7 +89,7 @@ export async function getUserOverallStats(
 
     if (error) {
       console.error('Error fetching overall stats:', error);
-      return { error: 'Database error while fetching overall statistics.', data: null };
+      return { error: 'Failed to load statistics. Please try again.', data: null };
     }
 
     // Group by difficulty and calculate stats
@@ -108,7 +118,7 @@ export async function getUserOverallStats(
 
     return { data: statsByDifficulty, error: null };
   } catch (error) {
-    console.error('Error in getUserOverallStats:', error);
-    return { error: 'Failed to fetch overall statistics.', data: null };
+    console.error('Unexpected error in getUserOverallStats:', error);
+    return { error: 'An unexpected error occurred while loading statistics. Please try again.', data: null };
   }
 }

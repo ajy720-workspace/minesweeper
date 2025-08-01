@@ -3,28 +3,22 @@ import React from 'react';
 import { Board as BoardType } from '@/lib/minesweeper';
 import Cell from './Cell';
 
-type GameState = 'playing' | 'won' | 'lost';
-
 type BoardProps = {
   board: BoardType;
-  gameState: GameState;
   focusedCell: { x: number; y: number } | null;
   showKeyboardCursor: boolean;
   onCellClick: (x: number, y: number) => void;
   onCellAuxClick: (x: number, y: number) => void;
   onCellContextMenu: (e: React.MouseEvent, x: number, y: number) => void;
-  onPlayAgain: () => void;
 };
 
 const Board: React.FC<BoardProps> = ({
   board,
-  gameState,
   focusedCell,
   showKeyboardCursor,
   onCellClick,
   onCellAuxClick,
   onCellContextMenu,
-  onPlayAgain,
 }) => {
   if (board.length === 0) {
     return <div>Loading...</div>; // Or a placeholder
