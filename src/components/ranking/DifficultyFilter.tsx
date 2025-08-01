@@ -1,17 +1,18 @@
 // src/components/ranking/DifficultyFilter.tsx
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Difficulty } from '@/types';
 
 export default function DifficultyFilter() {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentDifficulty = (searchParams.get('difficulty') as Difficulty) || 'beginner';
 
   const handleValueChange = (value: string) => {
-    router.push(`/ranking?difficulty=${value}`);
+    router.push(`${pathname}?difficulty=${value}`);
   };
 
   return (
