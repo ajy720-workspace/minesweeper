@@ -20,6 +20,22 @@ const Board: React.FC<BoardProps> = ({ board, gameState, focusedCell, onCellClic
     return <div>Loading...</div>; // Or a placeholder
   }
 
+  const handleCellMouseDown = (e: React.MouseEvent, x: number, y: number) => {
+    switch (e.button) {
+      case 0: // Left click
+        onCellClick(x, y);
+        break;
+      case 1: // Middle click (wheel)
+        onCellAuxClick(x, y);
+        break;
+      case 2: // Right click
+        onCellContextMenu(e, x, y);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div className="relative bg-gray-400 p-2">
       <div className="inline-block border-4 border-t-gray-300 border-l-gray-300 border-b-gray-500 border-r-gray-500">
@@ -30,9 +46,7 @@ const Board: React.FC<BoardProps> = ({ board, gameState, focusedCell, onCellClic
                 key={x}
                 cell={cell}
                 isFocused={focusedCell?.x === x && focusedCell?.y === y}
-                onClick={() => onCellClick(x, y)}
-                onAuxClick={() => onCellAuxClick(x, y)}
-                onContextMenu={(e) => onCellContextMenu(e, x, y)}
+                onMouseDown={(e) => handleCellMouseDown(e, x, y)}
               />
             ))}
           </div>
