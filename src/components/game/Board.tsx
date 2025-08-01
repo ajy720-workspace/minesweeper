@@ -48,17 +48,17 @@ const Board: React.FC<BoardProps> = ({
 
   const boardWidth = board[0]?.length || 0;
   const boardHeight = board.length;
-  
+
   return (
-    <div className="relative bg-gray-400 p-1 sm:p-2 max-w-fit mx-auto">
-      <div 
-        className="grid gap-0 border-4 border-t-gray-300 border-l-gray-300 border-b-gray-500 border-r-gray-500 bg-gray-400"
-        style={{ 
+    <div className="relative bg-[var(--game-background)] p-1 sm:p-2 max-w-fit mx-auto">
+      <div
+        className="grid gap-0 border-4 border-t-[var(--game-border-light)] border-l-[var(--game-border-light)] border-b-[var(--game-border-dark)] border-r-[var(--game-border-dark)] bg-[var(--game-background)]"
+        style={{
           gridTemplateColumns: `repeat(${boardWidth}, minmax(0, 1fr))`,
-          gridTemplateRows: `repeat(${boardHeight}, minmax(0, 1fr))`
+          gridTemplateRows: `repeat(${boardHeight}, minmax(0, 1fr))`,
         }}
       >
-        {board.map((row, y) => (
+        {board.map((row, y) =>
           row.map((cell, x) => (
             <Cell
               key={`${x}-${y}`}
@@ -66,8 +66,8 @@ const Board: React.FC<BoardProps> = ({
               isFocused={showKeyboardCursor && focusedCell?.x === x && focusedCell?.y === y}
               onMouseDown={(e) => handleCellMouseDown(e, x, y)}
             />
-          ))
-        ))}
+          )),
+        )}
       </div>
     </div>
   );

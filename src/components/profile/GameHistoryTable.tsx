@@ -1,13 +1,6 @@
 // src/components/profile/GameHistoryTable.tsx
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 type GameRecord = {
   id: number;
@@ -70,9 +63,7 @@ export default function GameHistoryTable({ data, difficulty }: GameHistoryTableP
                 </TableCell>
                 <TableCell>
                   {game.win ? (
-                    <span className="font-mono">
-                      {(game.clear_time_ms / 1000).toFixed(2)}s
-                    </span>
+                    <span className="font-mono">{(game.clear_time_ms / 1000).toFixed(2)}s</span>
                   ) : (
                     <span className="text-muted-foreground">—</span>
                   )}

@@ -41,7 +41,7 @@ export async function getUserProfile(
 
     // Calculate statistics
     const totalGames = gameHistory?.length || 0;
-    const totalWins = gameHistory?.filter(game => game.win).length || 0;
+    const totalWins = gameHistory?.filter((game) => game.win).length || 0;
     const winRate = totalGames > 0 ? (totalWins / totalGames) * 100 : 0;
 
     const profileData: ProfileData = {
@@ -71,7 +71,7 @@ export async function getUserOverallStats(
   const supabase = await createClient();
 
   try {
-    // Get overall statistics across all difficulties  
+    // Get overall statistics across all difficulties
     const { data: overallStats, error } = await supabase
       .from('game_records')
       .select('difficulty, win, clear_time_ms, score')
@@ -92,17 +92,17 @@ export async function getUserOverallStats(
           totalScore: 0,
         };
       }
-      
+
       acc[record.difficulty].totalGames++;
       if (record.win) {
         acc[record.difficulty].wins++;
         acc[record.difficulty].totalScore += record.score;
-        
+
         if (!acc[record.difficulty].bestTime || record.clear_time_ms < acc[record.difficulty].bestTime!) {
           acc[record.difficulty].bestTime = record.clear_time_ms;
         }
       }
-      
+
       return acc;
     }, {});
 

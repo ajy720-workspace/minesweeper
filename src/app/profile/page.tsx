@@ -16,7 +16,7 @@ interface ProfilePageProps {
 
 export default async function ProfilePage({ searchParams }: ProfilePageProps) {
   const session = await getSession();
-  
+
   if (!session) {
     redirect('/');
   }
@@ -27,7 +27,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-6">My Profile</h1>
-      
+
       <div className="mb-6">
         <h2 className="text-xl font-semibold mb-4">Welcome back, {session.username}!</h2>
       </div>

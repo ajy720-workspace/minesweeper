@@ -27,9 +27,7 @@ export default async function ProfileStats({ userId, difficulty }: ProfileStatsP
           <CardTitle className="text-sm font-medium">Total Games</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">
-            {currentDifficultyStats?.totalGames || 0}
-          </div>
+          <div className="text-2xl font-bold">{currentDifficultyStats?.totalGames || 0}</div>
         </CardContent>
       </Card>
 
@@ -54,9 +52,7 @@ export default async function ProfileStats({ userId, difficulty }: ProfileStatsP
               <CardTitle className="text-sm font-medium">Best Time</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                {(rankingStats.best_time_ms / 1000).toFixed(2)}s
-              </div>
+              <div className="text-2xl font-bold">{(rankingStats.best_time_ms / 1000).toFixed(2)}s</div>
             </CardContent>
           </Card>
 
@@ -65,12 +61,8 @@ export default async function ProfileStats({ userId, difficulty }: ProfileStatsP
               <CardTitle className="text-sm font-medium">Ranking</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">
-                #{rankingStats.user_rank}
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Top {rankingStats.percentile?.toFixed(1)}%
-              </p>
+              <div className="text-2xl font-bold">#{rankingStats.user_rank}</div>
+              <p className="text-sm text-muted-foreground">Top {rankingStats.percentile?.toFixed(1)}%</p>
             </CardContent>
           </Card>
         </>
@@ -81,9 +73,7 @@ export default async function ProfileStats({ userId, difficulty }: ProfileStatsP
               <CardTitle className="text-sm font-medium">Best Time</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-muted-foreground">
-                No wins yet
-              </div>
+              <div className="text-2xl font-bold text-muted-foreground">No wins yet</div>
             </CardContent>
           </Card>
 
@@ -92,9 +82,7 @@ export default async function ProfileStats({ userId, difficulty }: ProfileStatsP
               <CardTitle className="text-sm font-medium">Ranking</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-muted-foreground">
-                Unranked
-              </div>
+              <div className="text-2xl font-bold text-muted-foreground">Unranked</div>
             </CardContent>
           </Card>
         </>

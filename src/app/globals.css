@@ -39,6 +39,18 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  /* Game-specific design tokens */
+  --game-background: oklch(0.75 0 0); /* gray-400 */
+  --game-border-light: oklch(0.85 0 0); /* gray-300 */
+  --game-border-dark: oklch(0.65 0 0); /* gray-500 */
+  --cell-background: oklch(0.82 0 0); /* gray-300 */
+  --cell-revealed: oklch(0.88 0 0); /* gray-200 */
+  --cell-hover: oklch(0.88 0 0); /* gray-200 */
+  --cell-active: oklch(0.94 0 0); /* gray-100 */
+  --cell-border: oklch(0.76 0 0); /* gray-400 */
+  --game-text-primary: oklch(0.27 0 0); /* gray-800 */
+  --game-text-secondary: oklch(0.41 0 0); /* gray-700 */
+  --game-text-muted: oklch(0.54 0 0); /* gray-600 */
 }
 
 :root {
