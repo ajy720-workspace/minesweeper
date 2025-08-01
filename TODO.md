@@ -34,6 +34,7 @@
 ### Pages
 
 - [ ] **랭킹 페이지 (`/ranking`) 구현**
+  - rpc를 적극적으로 사용해서 클라이언트 로직 최소화
   - [ ] Supabase에서 `game_records` 데이터 Fetch
   - [ ] 난이도별 랭킹을 보여주는 테이블 UI 구현
   - [ ] 난이도 선택 필터(Dropdown) UI 구현

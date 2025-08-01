@@ -7,6 +7,8 @@ import { Difficulty, DIFFICULTY_SETTINGS } from '@/types';
 import Board from './Board';
 import DifficultySelector from './DifficultySelector';
 import GameInfoBar from './GameInfoBar';
+import { loginOrRegister, saveGameRecord } from '@/app/actions';
+import { AuthModal } from '../auth/AuthModal';
 
 type GameState = 'playing' | 'won' | 'lost';
 
@@ -19,6 +21,7 @@ const Game: React.FC = () => {
   const [timer, setTimer] = useState(0);
   const [score, setScore] = useState(0);
   const [focusedCell, setFocusedCell] = useState<{ x: number; y: number } | null>(null);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   const initializeBoard = useCallback(() => {
     const settings = DIFFICULTY_SETTINGS[difficulty];
@@ -42,6 +45,7 @@ const Game: React.FC = () => {
     setTimer(0);
     setScore(0);
     setFocusedCell({ x: 0, y: 0 });
+    setIsAuthModalOpen(false);
   }, [difficulty]);
 
   useEffect(() => {
@@ -57,6 +61,12 @@ const Game: React.FC = () => {
     }
     return () => clearInterval(interval);
   }, [gameState, isFirstClick]);
+
+  useEffect(() => {
+    if (gameState === 'won' || gameState === 'lost') {
+      setIsAuthModalOpen(true);
+    }
+  }, [gameState]);
 
   const checkWinCondition = useCallback((currentBoard: BoardType): boolean => {
     return currentBoard.every((row) => row.every((cell) => cell.isMine || cell.isRevealed));
@@ -146,9 +156,41 @@ const Game: React.FC = () => {
     setDifficulty(newDifficulty);
   };
 
+  const handleSaveRecord = async (username: string, password?: string) => {
+    if (!password) {
+      alert('Password is required.');
+      return;
+    }
+
+    const result = await loginOrRegister(username, password);
+
+    if (result.error) {
+      alert(result.error);
+      return;
+    }
+
+    if (result.user) {
+      const gameData = {
+        difficulty: difficulty,
+        win: gameState === 'won',
+        clear_time_ms: timer * 1000,
+        score: score,
+        // TODO: Add board_size and mine_count for custom games
+      };
+      const saveResult = await saveGameRecord(result.user.id, gameData);
+      if (saveResult.error) {
+        alert(saveResult.error);
+      } else {
+        alert('Score saved successfully!');
+        setIsAuthModalOpen(false);
+        initializeBoard();
+      }
+    }
+  };
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!focusedCell) return;
+      if (isAuthModalOpen || !focusedCell) return;
 
       const { x, y } = focusedCell;
       const settings = DIFFICULTY_SETTINGS[difficulty];
@@ -199,7 +241,7 @@ const Game: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [focusedCell, board, difficulty, handleCellClick, toggleMark, updateBoardState]);
+  }, [focusedCell, board, difficulty, handleCellClick, toggleMark, updateBoardState, isAuthModalOpen]);
 
   return (
     <div className="flex flex-col items-center">
@@ -216,6 +258,14 @@ const Game: React.FC = () => {
           onPlayAgain={initializeBoard}
         />
       </div>
+      {isAuthModalOpen && (
+        <AuthModal
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)}
+          gameResult={{ status: gameState as 'won' | 'lost', time: timer, score, difficulty }}
+          onSaveRecord={handleSaveRecord}
+        />
+      )}
     </div>
   );
 };
