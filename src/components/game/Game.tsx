@@ -27,6 +27,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
   const [focusedCell, setFocusedCell] = useState<{ x: number; y: number } | null>(null);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const [showKeyboardCursor, setShowKeyboardCursor] = useState(false);
 
   const initializeBoard = useCallback(() => {
     const settings = DIFFICULTY_SETTINGS[difficulty];
@@ -52,6 +53,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
     setFocusedCell({ x: 0, y: 0 });
     setIsResultModalOpen(false);
     setSaveStatus('idle');
+    setShowKeyboardCursor(false);
   }, [difficulty]);
 
   useEffect(() => {
@@ -132,6 +134,10 @@ const Game: React.FC<GameProps> = ({ session }) => {
   const handleCellClick = useCallback(
     (x: number, y: number) => {
       if (gameState !== 'playing' || !board[y]?.[x]) return;
+      
+      // Hide keyboard cursor when using mouse
+      setShowKeyboardCursor(false);
+      setFocusedCell({ x, y });
 
       if (isFirstClick) {
         const settings = DIFFICULTY_SETTINGS[difficulty];
@@ -209,25 +215,29 @@ const Game: React.FC<GameProps> = ({ session }) => {
       const { x, y } = focusedCell;
       const settings = DIFFICULTY_SETTINGS[difficulty];
 
+      // Prevent default behavior for game keys to avoid browser shortcuts
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'f', '1', 'q', '2'].includes(e.key)) {
+        e.preventDefault();
+      }
+
       switch (e.key) {
         case 'ArrowUp':
-          e.preventDefault();
+          setShowKeyboardCursor(true);
           setFocusedCell({ x, y: Math.max(0, y - 1) });
           break;
         case 'ArrowDown':
-          e.preventDefault();
+          setShowKeyboardCursor(true);
           setFocusedCell({ x, y: Math.min(settings.height - 1, y + 1) });
           break;
         case 'ArrowLeft':
-          e.preventDefault();
+          setShowKeyboardCursor(true);
           setFocusedCell({ x: Math.max(0, x - 1), y });
           break;
         case 'ArrowRight':
-          e.preventDefault();
+          setShowKeyboardCursor(true);
           setFocusedCell({ x: Math.min(settings.width - 1, x + 1), y });
           break;
         case ' ': // Spacebar
-          e.preventDefault();
           if (e.shiftKey) {
             if (board[y]?.[x]?.isRevealed) {
               const newBoard = chordCell(board, x, y);
@@ -242,12 +252,12 @@ const Game: React.FC<GameProps> = ({ session }) => {
           break;
         case 'f':
         case '1':
-          e.preventDefault();
+          setShowKeyboardCursor(true);
           toggleMark(x, y);
           break;
         case 'q':
         case '2':
-          e.preventDefault();
+          setShowKeyboardCursor(true);
           toggleMark(x, y);
           break;
       }
@@ -267,6 +277,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
             board={board}
             gameState={gameState}
             focusedCell={focusedCell}
+            showKeyboardCursor={showKeyboardCursor}
             onCellClick={handleCellClick}
             onCellAuxClick={handleCellClick}
             onCellContextMenu={handleCellContextMenu}

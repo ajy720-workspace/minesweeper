@@ -9,6 +9,7 @@ type BoardProps = {
   board: BoardType;
   gameState: GameState;
   focusedCell: { x: number; y: number } | null;
+  showKeyboardCursor: boolean;
   onCellClick: (x: number, y: number) => void;
   onCellAuxClick: (x: number, y: number) => void;
   onCellContextMenu: (e: React.MouseEvent, x: number, y: number) => void;
@@ -19,6 +20,7 @@ const Board: React.FC<BoardProps> = ({
   board,
   gameState,
   focusedCell,
+  showKeyboardCursor,
   onCellClick,
   onCellAuxClick,
   onCellContextMenu,
@@ -61,7 +63,7 @@ const Board: React.FC<BoardProps> = ({
             <Cell
               key={`${x}-${y}`}
               cell={cell}
-              isFocused={focusedCell?.x === x && focusedCell?.y === y}
+              isFocused={showKeyboardCursor && focusedCell?.x === x && focusedCell?.y === y}
               onMouseDown={(e) => handleCellMouseDown(e, x, y)}
             />
           ))

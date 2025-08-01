@@ -45,12 +45,15 @@ const Cell: React.FC<CellProps> = ({ cell, isFocused, onMouseDown }) => {
     return null;
   };
 
-  const baseStyle = 'w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 border flex items-center justify-center text-xs sm:text-sm md:text-base font-bold transition-all duration-150';
+  const baseStyle = 'w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 border flex items-center justify-center text-xs sm:text-sm md:text-base font-bold';
   const revealedStyle = 'border-gray-400 bg-gray-200';
-  const unrevealedStyle = 'border-gray-400 bg-gray-300 hover:bg-gray-200 active:bg-gray-100 cursor-pointer transform hover:scale-105 active:scale-95';
-  const focusStyle = isFocused ? 'ring-2 ring-blue-500 z-10' : '';
+  const unrevealedStyle = 'border-gray-400 bg-gray-300 hover:bg-gray-200 active:bg-gray-100 cursor-pointer transition-colors duration-75 hover:scale-105 active:scale-95';
+  const focusStyle = isFocused ? 'ring-2 ring-blue-500 ring-offset-0 z-10' : '';
+  
+  // Disable transitions when focused (keyboard navigation)
+  const transitionStyle = isFocused ? '' : 'transition-transform duration-75';
 
-  const cellStyle = `${baseStyle} ${cell.isRevealed ? revealedStyle : unrevealedStyle} ${focusStyle}`;
+  const cellStyle = `${baseStyle} ${cell.isRevealed ? revealedStyle : unrevealedStyle} ${focusStyle} ${transitionStyle}`;
 
   return (
     <div
