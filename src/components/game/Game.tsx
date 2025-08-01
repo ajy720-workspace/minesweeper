@@ -256,19 +256,21 @@ const Game: React.FC<GameProps> = ({ session }) => {
   }, [focusedCell, board, difficulty, handleCellClick, toggleMark, updateBoardState, isAuthModalOpen]);
 
   return (
-    <div className="flex flex-col items-center">
-      <DifficultySelector onSelectDifficulty={handleDifficultyChange} currentDifficulty={difficulty} />
-      <div className="inline-block border-4 border-gray-500 bg-gray-400 p-1">
-        <GameInfoBar remainingMines={remainingMines} timer={timer} score={score} />
-        <Board
-          board={board}
-          gameState={gameState}
-          focusedCell={focusedCell}
-          onCellClick={handleCellClick}
-          onCellAuxClick={handleCellClick}
-          onCellContextMenu={handleCellContextMenu}
-          onPlayAgain={initializeBoard}
-        />
+    <div className="flex flex-col items-center px-2 sm:px-4">
+      <div className="w-full max-w-4xl">
+        <DifficultySelector onSelectDifficulty={handleDifficultyChange} currentDifficulty={difficulty} />
+        <div className="border-4 border-gray-500 bg-gray-400 p-1 max-w-fit mx-auto">
+          <GameInfoBar remainingMines={remainingMines} timer={timer} score={score} />
+          <Board
+            board={board}
+            gameState={gameState}
+            focusedCell={focusedCell}
+            onCellClick={handleCellClick}
+            onCellAuxClick={handleCellClick}
+            onCellContextMenu={handleCellContextMenu}
+            onPlayAgain={initializeBoard}
+          />
+        </div>
       </div>
       {isAuthModalOpen && (
         <AuthModal

@@ -44,20 +44,27 @@ const Board: React.FC<BoardProps> = ({
     }
   };
 
+  const boardWidth = board[0]?.length || 0;
+  const boardHeight = board.length;
+  
   return (
-    <div className="relative bg-gray-400 p-2">
-      <div className="inline-block border-4 border-t-gray-300 border-l-gray-300 border-b-gray-500 border-r-gray-500">
+    <div className="relative bg-gray-400 p-1 sm:p-2 max-w-fit mx-auto">
+      <div 
+        className="grid gap-0 border-4 border-t-gray-300 border-l-gray-300 border-b-gray-500 border-r-gray-500 bg-gray-400"
+        style={{ 
+          gridTemplateColumns: `repeat(${boardWidth}, minmax(0, 1fr))`,
+          gridTemplateRows: `repeat(${boardHeight}, minmax(0, 1fr))`
+        }}
+      >
         {board.map((row, y) => (
-          <div key={y} className="flex">
-            {row.map((cell, x) => (
-              <Cell
-                key={x}
-                cell={cell}
-                isFocused={focusedCell?.x === x && focusedCell?.y === y}
-                onMouseDown={(e) => handleCellMouseDown(e, x, y)}
-              />
-            ))}
-          </div>
+          row.map((cell, x) => (
+            <Cell
+              key={`${x}-${y}`}
+              cell={cell}
+              isFocused={focusedCell?.x === x && focusedCell?.y === y}
+              onMouseDown={(e) => handleCellMouseDown(e, x, y)}
+            />
+          ))
         ))}
       </div>
       {gameState !== 'playing' && (
