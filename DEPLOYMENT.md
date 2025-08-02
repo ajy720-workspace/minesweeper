@@ -95,6 +95,7 @@ docker compose --version
 ### 4. Set Up Web Server
 
 Configure your reverse proxy (nginx/apache) to serve:
+
 - `mine.ajy720.me` → `http://localhost:5000` (production)
 - `mine-test.ajy720.me` → `http://localhost:5001` (test)
 
@@ -104,7 +105,7 @@ Example nginx configuration:
 server {
     listen 80;
     server_name mine.ajy720.me;
-    
+
     location / {
         proxy_pass http://localhost:5000;
         proxy_http_version 1.1;
@@ -118,7 +119,7 @@ server {
 server {
     listen 80;
     server_name mine-test.ajy720.me;
-    
+
     location / {
         proxy_pass http://localhost:5001;
         proxy_http_version 1.1;
@@ -145,18 +146,21 @@ server {
   - Container-based isolation and easy rollbacks
 
 #### How Docker Deployment Works:
+
 1. **Build**: Creates Docker image with commit SHA tag
 2. **Push**: Uploads to GitHub Container Registry (GHCR)
 3. **Deploy**: Pulls image on server and starts container
 4. **Cleanup**: Removes old images (keeps last 3)
 
 #### How to Use:
+
 1. **Enable Deployment**: Add the `deploy:test` label to your PR
 2. **Automatic Updates**: Any new commits will rebuild and redeploy container
 3. **Disable Deployment**: Remove the `deploy:test` label
 4. **Manual Deploy**: Use workflow_dispatch in GitHub Actions
 
 #### Example Workflow:
+
 ```
 1. Create feature branch: `feat/new-feature`
 2. Make changes and push
@@ -270,6 +274,7 @@ pm2 logs minesweeper-test
 ## Monitoring
 
 Consider setting up monitoring for:
+
 - Application uptime
 - Deployment success/failure notifications
 - Error tracking

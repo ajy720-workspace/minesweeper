@@ -4,10 +4,10 @@ services:
     image: ${IMAGE_NAME_WITH_TAG:-ghcr.io/ajy720/minesweeper:test-latest}
     container_name: minesweeper-test
     ports:
-      - "5001:3000"
+      - '5001:3000'
     env_file:
       - .env.test
     restart: unless-stopped
     labels:
-      - "environment=test"
-      - "app=minesweeper"
+      - 'environment=test'
+      - 'app=minesweeper'

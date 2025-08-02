@@ -154,11 +154,11 @@
   --game-background: oklch(0.35 0 0); /* darker gray */
   --game-border-light: oklch(0.45 0 0); /* lighter dark gray */
   --game-border-dark: oklch(0.25 0 0); /* darker gray */
-  --cell-background: oklch(0.40 0 0); /* dark gray */
-  --cell-revealed: oklch(0.50 0 0); /* lighter dark gray */
+  --cell-background: oklch(0.4 0 0); /* dark gray */
+  --cell-revealed: oklch(0.5 0 0); /* lighter dark gray */
   --cell-hover: oklch(0.45 0 0); /* hover gray */
   --cell-active: oklch(0.55 0 0); /* active gray */
-  --cell-border: oklch(0.30 0 0); /* border gray */
+  --cell-border: oklch(0.3 0 0); /* border gray */
   --game-text-primary: oklch(0.85 0 0); /* light gray */
   --game-text-secondary: oklch(0.75 0 0); /* medium light gray */
   --game-text-muted: oklch(0.65 0 0); /* muted light gray */
@@ -175,9 +175,9 @@
 
 /* Modern Theme */
 .theme-modern {
-  --game-background: oklch(0.70 0.02 200); /* subtle blue-gray */
-  --game-border-light: oklch(0.80 0.02 200); /* light blue-gray */
-  --game-border-dark: oklch(0.60 0.02 200); /* darker blue-gray */
+  --game-background: oklch(0.7 0.02 200); /* subtle blue-gray */
+  --game-border-light: oklch(0.8 0.02 200); /* light blue-gray */
+  --game-border-dark: oklch(0.6 0.02 200); /* darker blue-gray */
   --cell-background: oklch(0.85 0.01 200); /* very light blue */
   --cell-revealed: oklch(0.92 0.01 200); /* almost white blue */
   --cell-hover: oklch(0.88 0.02 200); /* hover blue */
@@ -185,7 +185,7 @@
   --cell-border: oklch(0.65 0.02 200); /* border blue */
   --game-text-primary: oklch(0.25 0.02 200); /* dark blue */
   --game-text-secondary: oklch(0.35 0.02 200); /* medium blue */
-  --game-text-muted: oklch(0.50 0.02 200); /* muted blue */
+  --game-text-muted: oklch(0.5 0.02 200); /* muted blue */
   /* Mine count colors - modern blue theme */
   --mine-1: oklch(0.5 0.15 230); /* blue */
   --mine-2: oklch(0.5 0.15 160); /* blue-green */
@@ -194,17 +194,17 @@
   --mine-5: oklch(0.3 0.15 350); /* magenta */
   --mine-6: oklch(0.5 0.15 190); /* cyan */
   --mine-7: oklch(0.25 0.02 200); /* primary text */
-  --mine-8: oklch(0.50 0.02 200); /* muted text */
+  --mine-8: oklch(0.5 0.02 200); /* muted text */
 }
 
 .theme-modern.dark {
-  --game-background: oklch(0.30 0.02 200); /* dark blue-gray */
-  --game-border-light: oklch(0.40 0.02 200); /* lighter dark blue */
-  --game-border-dark: oklch(0.20 0.02 200); /* darker blue */
+  --game-background: oklch(0.3 0.02 200); /* dark blue-gray */
+  --game-border-light: oklch(0.4 0.02 200); /* lighter dark blue */
+  --game-border-dark: oklch(0.2 0.02 200); /* darker blue */
   --cell-background: oklch(0.35 0.02 200); /* dark blue */
   --cell-revealed: oklch(0.45 0.02 200); /* lighter dark blue */
-  --cell-hover: oklch(0.40 0.02 200); /* hover blue */
-  --cell-active: oklch(0.50 0.02 200); /* active blue */
+  --cell-hover: oklch(0.4 0.02 200); /* hover blue */
+  --cell-active: oklch(0.5 0.02 200); /* active blue */
   --cell-border: oklch(0.25 0.02 200); /* border blue */
   --game-text-primary: oklch(0.85 0.01 200); /* light blue */
   --game-text-secondary: oklch(0.75 0.01 200); /* medium light blue */
@@ -222,49 +222,49 @@
 
 /* Neon Theme */
 .theme-neon {
-  --game-background: oklch(0.20 0.05 280); /* dark purple */
-  --game-border-light: oklch(0.60 0.15 280); /* bright purple */
-  --game-border-dark: oklch(0.40 0.10 280); /* medium purple */
+  --game-background: oklch(0.2 0.05 280); /* dark purple */
+  --game-border-light: oklch(0.6 0.15 280); /* bright purple */
+  --game-border-dark: oklch(0.4 0.1 280); /* medium purple */
   --cell-background: oklch(0.25 0.05 280); /* dark purple */
   --cell-revealed: oklch(0.35 0.08 280); /* lighter purple */
-  --cell-hover: oklch(0.30 0.10 280); /* hover purple */
-  --cell-active: oklch(0.40 0.12 280); /* active purple */
-  --cell-border: oklch(0.50 0.15 280); /* bright border */
-  --game-text-primary: oklch(0.90 0.10 280); /* bright purple text */
-  --game-text-secondary: oklch(0.80 0.08 280); /* medium bright purple */
-  --game-text-muted: oklch(0.70 0.06 280); /* muted bright purple */
+  --cell-hover: oklch(0.3 0.1 280); /* hover purple */
+  --cell-active: oklch(0.4 0.12 280); /* active purple */
+  --cell-border: oklch(0.5 0.15 280); /* bright border */
+  --game-text-primary: oklch(0.9 0.1 280); /* bright purple text */
+  --game-text-secondary: oklch(0.8 0.08 280); /* medium bright purple */
+  --game-text-muted: oklch(0.7 0.06 280); /* muted bright purple */
   /* Mine count colors - neon theme */
-  --mine-1: oklch(0.8 0.20 260); /* bright blue */
-  --mine-2: oklch(0.8 0.20 120); /* bright green */
+  --mine-1: oklch(0.8 0.2 260); /* bright blue */
+  --mine-2: oklch(0.8 0.2 120); /* bright green */
   --mine-3: oklch(0.8 0.25 0); /* bright red */
-  --mine-4: oklch(0.8 0.20 300); /* bright magenta */
+  --mine-4: oklch(0.8 0.2 300); /* bright magenta */
   --mine-5: oklch(0.9 0.25 340); /* very bright pink */
-  --mine-6: oklch(0.8 0.20 180); /* bright cyan */
-  --mine-7: oklch(0.90 0.10 280); /* primary text */
-  --mine-8: oklch(0.70 0.06 280); /* muted text */
+  --mine-6: oklch(0.8 0.2 180); /* bright cyan */
+  --mine-7: oklch(0.9 0.1 280); /* primary text */
+  --mine-8: oklch(0.7 0.06 280); /* muted text */
 }
 
 .theme-neon.dark {
   --game-background: oklch(0.15 0.08 280); /* very dark purple */
-  --game-border-light: oklch(0.70 0.20 280); /* very bright purple */
-  --game-border-dark: oklch(0.30 0.10 280); /* dark purple */
-  --cell-background: oklch(0.20 0.08 280); /* dark purple */
-  --cell-revealed: oklch(0.30 0.12 280); /* lighter purple */
+  --game-border-light: oklch(0.7 0.2 280); /* very bright purple */
+  --game-border-dark: oklch(0.3 0.1 280); /* dark purple */
+  --cell-background: oklch(0.2 0.08 280); /* dark purple */
+  --cell-revealed: oklch(0.3 0.12 280); /* lighter purple */
   --cell-hover: oklch(0.25 0.15 280); /* hover purple */
   --cell-active: oklch(0.35 0.18 280); /* active purple */
-  --cell-border: oklch(0.60 0.20 280); /* bright border */
+  --cell-border: oklch(0.6 0.2 280); /* bright border */
   --game-text-primary: oklch(0.95 0.15 280); /* very bright purple text */
   --game-text-secondary: oklch(0.85 0.12 280); /* bright purple */
-  --game-text-muted: oklch(0.75 0.10 280); /* muted bright purple */
+  --game-text-muted: oklch(0.75 0.1 280); /* muted bright purple */
   /* Mine count colors - neon dark theme */
   --mine-1: oklch(0.9 0.25 260); /* very bright blue */
   --mine-2: oklch(0.9 0.25 120); /* very bright green */
-  --mine-3: oklch(0.9 0.30 0); /* very bright red */
+  --mine-3: oklch(0.9 0.3 0); /* very bright red */
   --mine-4: oklch(0.9 0.25 300); /* very bright magenta */
-  --mine-5: oklch(0.95 0.30 340); /* extremely bright pink */
+  --mine-5: oklch(0.95 0.3 340); /* extremely bright pink */
   --mine-6: oklch(0.9 0.25 180); /* very bright cyan */
   --mine-7: oklch(0.95 0.15 280); /* primary text */
-  --mine-8: oklch(0.75 0.10 280); /* muted text */
+  --mine-8: oklch(0.75 0.1 280); /* muted text */
 }
 
 @layer base {

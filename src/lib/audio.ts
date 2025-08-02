@@ -19,7 +19,7 @@ class AudioManager {
     if (this.isInitialized || typeof window === 'undefined') return;
 
     try {
-      this.context = new (window.AudioContext)();
+      this.context = new window.AudioContext();
       this.isInitialized = true;
     } catch (error) {
       console.warn('Web Audio API not supported:', error);
@@ -101,7 +101,7 @@ class AudioManager {
    */
   async playSound(type: SoundType): Promise<void> {
     if (this.isMuted) return; // Early return if muted
-    
+
     if (!this.isInitialized) {
       await this.initialize();
     }
@@ -119,18 +119,18 @@ class AudioManager {
         if (this.context) {
           const oscillator = this.context.createOscillator();
           const gainNode = this.context.createGain();
-          
+
           oscillator.connect(gainNode);
           gainNode.connect(this.context.destination);
-          
+
           oscillator.frequency.setValueAtTime(400, this.context.currentTime);
           oscillator.frequency.linearRampToValueAtTime(600, this.context.currentTime + 0.15);
           oscillator.type = 'triangle';
-          
+
           gainNode.gain.setValueAtTime(0, this.context.currentTime);
           gainNode.gain.linearRampToValueAtTime(0.08, this.context.currentTime + 0.02);
           gainNode.gain.exponentialRampToValueAtTime(0.001, this.context.currentTime + 0.15);
-          
+
           oscillator.start(this.context.currentTime);
           oscillator.stop(this.context.currentTime + 0.15);
         }
@@ -141,18 +141,18 @@ class AudioManager {
         if (this.context) {
           const oscillator = this.context.createOscillator();
           const gainNode = this.context.createGain();
-          
+
           oscillator.connect(gainNode);
           gainNode.connect(this.context.destination);
-          
+
           oscillator.frequency.setValueAtTime(600, this.context.currentTime);
           oscillator.frequency.linearRampToValueAtTime(400, this.context.currentTime + 0.12);
           oscillator.type = 'triangle';
-          
+
           gainNode.gain.setValueAtTime(0, this.context.currentTime);
           gainNode.gain.linearRampToValueAtTime(0.06, this.context.currentTime + 0.02);
           gainNode.gain.exponentialRampToValueAtTime(0.001, this.context.currentTime + 0.12);
-          
+
           oscillator.start(this.context.currentTime);
           oscillator.stop(this.context.currentTime + 0.12);
         }
@@ -177,18 +177,18 @@ class AudioManager {
         if (this.context) {
           const oscillator = this.context.createOscillator();
           const gainNode = this.context.createGain();
-          
+
           oscillator.connect(gainNode);
           gainNode.connect(this.context.destination);
-          
+
           oscillator.frequency.setValueAtTime(400, this.context.currentTime);
           oscillator.frequency.exponentialRampToValueAtTime(200, this.context.currentTime + 0.5);
           oscillator.type = 'sawtooth';
-          
+
           gainNode.gain.setValueAtTime(0, this.context.currentTime);
           gainNode.gain.linearRampToValueAtTime(0.15, this.context.currentTime + 0.05);
           gainNode.gain.exponentialRampToValueAtTime(0.001, this.context.currentTime + 0.5);
-          
+
           oscillator.start(this.context.currentTime);
           oscillator.stop(this.context.currentTime + 0.5);
         }
