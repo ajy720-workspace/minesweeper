@@ -163,30 +163,33 @@ This is a Next.js 15 Minesweeper game with user authentication and ranking syste
 - Handle null/undefined values and union types properly
 - Follow ESLint rules including @typescript-eslint and react-hooks
 
-### Current Development Status (TODO.md Reference)
+### Current Development Status
 
-**v1.0 Core Features - Completed:**
+**v1.0 Core Features: ✅ 100% COMPLETED**
 
-- ✅ Difficulty selection (beginner/intermediate/expert)
-- ✅ Game info UI (mine count, timer, score)
-- ✅ Advanced controls (chord-clicking, keyboard navigation)
-- ✅ Independent scoring system
-- ✅ Supabase integration with TypeScript types
-- ✅ Custom authentication (login/register in game end modal)
-- ✅ Session management with JWT cookies
-- ✅ Game record saving for authenticated/anonymous users
-- ✅ Ranking page with RPC functions implemented
+All core features have been implemented including:
+- Complete gameplay mechanics with difficulty selection
+- User authentication and session management  
+- Database integration with game records
+- Ranking and profile pages
+- Audio system with Web Audio API
+- Game settings panel with controls
+- Complete UI/UX improvements and responsive design
+- Code quality improvements and documentation
 
-**Remaining v1.0 Tasks:**
+**Next Development Phase (v1.1):**
 
-- ❌ Profile page (`/profile`) - User's personal play records and statistics
-- ❌ UI/UX improvements (responsive design, visual effects, game result display)
-- ❌ Code quality improvements (error handling, documentation)
-
-**v1.1 Future Features:**
-
+See `BACKLOG.md` for upcoming features:
 - Custom difficulty settings
-- Theme switching (dark/light mode)
+- Theme system (dark/light mode)
+- Enhanced statistics dashboard
+- Mobile touch optimizations
+
+**Development Files:**
+
+- `BACKLOG.md` - Active tasks and feature backlog (read this for current priorities)
+- `CHANGELOG.md` - Completed work history (for reference only)
+- This file tracks overall architecture and conventions
 
 ### Testing Strategy
 
