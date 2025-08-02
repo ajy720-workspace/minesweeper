@@ -23,6 +23,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
   const [isFirstClick, setIsFirstClick] = useState(true);
   const [remainingMines, setRemainingMines] = useState(DIFFICULTY_SETTINGS.beginner.mineCount);
   const [timer, setTimer] = useState(0);
+  const [gameStartTime, setGameStartTime] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [focusedCell, setFocusedCell] = useState<{ x: number; y: number } | null>(null);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
@@ -49,6 +50,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
     setIsFirstClick(true);
     setRemainingMines(settings.mineCount);
     setTimer(0);
+    setGameStartTime(null);
     setScore(0);
     setFocusedCell({ x: 0, y: 0 });
     setIsResultModalOpen(false);
@@ -63,12 +65,18 @@ const Game: React.FC<GameProps> = ({ session }) => {
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (gameState === 'playing' && !isFirstClick) {
+      if (!gameStartTime) {
+        setGameStartTime(Date.now());
+      }
       interval = setInterval(() => {
-        setTimer((prevTimer) => prevTimer + 1);
-      }, 1000);
+        if (gameStartTime) {
+          const elapsedMs = Date.now() - gameStartTime;
+          setTimer(Math.floor(elapsedMs / 1000)); // Display in seconds
+        }
+      }, 100); // Update more frequently for smoother display
     }
     return () => clearInterval(interval);
-  }, [gameState, isFirstClick]);
+  }, [gameState, isFirstClick, gameStartTime]);
 
   const handleSaveRecord = useCallback(
     async (username: string, password?: string) => {
@@ -90,10 +98,13 @@ const Game: React.FC<GameProps> = ({ session }) => {
         userId = result.user.id;
       }
 
+      // Calculate precise clear time in milliseconds
+      const clearTimeMs = gameStartTime ? Date.now() - gameStartTime : timer * 1000;
+
       const gameData = {
         difficulty: difficulty,
         win: gameState === 'won',
-        clear_time_ms: timer * 1000,
+        clear_time_ms: clearTimeMs,
         score: score,
       };
 
@@ -104,7 +115,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
         setSaveStatus('saved');
       }
     },
-    [session, difficulty, gameState, timer, score],
+    [session, difficulty, gameState, timer, score, gameStartTime],
   );
 
   useEffect(() => {
@@ -269,7 +280,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
 
   return (
     <div className="flex flex-col items-center px-2 sm:px-4">
-      <div className="w-full max-w-4xl">
+      <div className="w-full max-w-6xl">
         <DifficultySelector onSelectDifficulty={handleDifficultyChange} currentDifficulty={difficulty} />
         <div className="border-4 border-[var(--game-border-dark)] bg-[var(--game-background)] p-2 max-w-fit mx-auto">
           <GameInfoBar remainingMines={remainingMines} timer={timer} score={score} />
@@ -287,7 +298,13 @@ const Game: React.FC<GameProps> = ({ session }) => {
         <GameResultModal
           isOpen={isResultModalOpen}
           onClose={() => setIsResultModalOpen(false)}
-          gameResult={{ status: gameState as 'won' | 'lost', time: timer, score, difficulty }}
+          gameResult={{
+            status: gameState as 'won' | 'lost',
+            time: timer,
+            timeMs: gameStartTime ? Date.now() - gameStartTime : timer * 1000,
+            score,
+            difficulty,
+          }}
           session={session}
           onSaveRecord={!session ? handleSaveRecord : undefined}
           onPlayAgain={initializeBoard}

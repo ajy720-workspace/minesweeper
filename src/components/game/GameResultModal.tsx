@@ -15,6 +15,7 @@ interface GameResultModalProps {
   gameResult: {
     status: GameState;
     time: number;
+    timeMs?: number;
     score: number;
     difficulty: string;
   };
@@ -48,7 +49,20 @@ export function GameResultModal({
     onClose();
   };
 
-  const formatTime = (seconds: number) => {
+  const formatTime = (seconds: number, milliseconds?: number) => {
+    if (milliseconds && milliseconds > 0) {
+      const totalMs = milliseconds;
+      const mins = Math.floor(totalMs / 60000);
+      const secs = Math.floor((totalMs % 60000) / 1000);
+      const ms = totalMs % 1000;
+
+      if (mins > 0) {
+        return `${mins}m ${secs}.${ms.toString().padStart(3, '0')}s`;
+      } else {
+        return `${secs}.${ms.toString().padStart(3, '0')}s`;
+      }
+    }
+
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
@@ -72,7 +86,7 @@ export function GameResultModal({
           <CardContent className="pt-6">
             <div className="grid grid-cols-2 gap-4 text-center">
               <div>
-                <div className="text-2xl font-bold text-blue-600">{formatTime(gameResult.time)}</div>
+                <div className="text-2xl font-bold text-blue-600">{formatTime(gameResult.time, gameResult.timeMs)}</div>
                 <div className="text-sm text-muted-foreground">Time</div>
               </div>
               <div>

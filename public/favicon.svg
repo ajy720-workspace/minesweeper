@@ -1,0 +1,50 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="32" height="32" fill="#c0c0c0" rx="2"/>
+  
+  <!-- Grid lines -->
+  <line x1="10.67" y1="2" x2="10.67" y2="30" stroke="#808080" stroke-width="0.5"/>
+  <line x1="21.33" y1="2" x2="21.33" y2="30" stroke="#808080" stroke-width="0.5"/>
+  <line x1="2" y1="10.67" x2="30" y2="10.67" stroke="#808080" stroke-width="0.5"/>
+  <line x1="2" y1="21.33" x2="30" y2="21.33" stroke="#808080" stroke-width="0.5"/>
+  
+  <!-- Cell backgrounds -->
+  <!-- Top row -->
+  <rect x="2" y="2" width="8.67" height="8.67" fill="#d4d4d4"/>
+  <rect x="10.67" y="2" width="10.66" height="8.67" fill="#d4d4d4"/>
+  <rect x="21.33" y="2" width="8.67" height="8.67" fill="#d4d4d4"/>
+  <!-- Middle row -->
+  <rect x="2" y="10.67" width="8.67" height="10.66" fill="#d4d4d4"/>
+  <rect x="10.67" y="10.67" width="10.66" height="10.66" fill="#ffcccc"/>
+  <rect x="21.33" y="10.67" width="8.67" height="10.66" fill="#d4d4d4"/>
+  <!-- Bottom row -->
+  <rect x="2" y="21.33" width="8.67" height="8.67" fill="#d4d4d4"/>
+  <rect x="10.67" y="21.33" width="10.66" height="8.67" fill="#e0e0e0"/>
+  <rect x="21.33" y="21.33" width="8.67" height="8.67" fill="#d4d4d4"/>
+  
+  <!-- Cell content -->
+  <!-- Numbers -->
+  <text x="6.33" y="8" text-anchor="middle" font-size="6" font-weight="bold" fill="#0066ff" font-family="monospace">1</text>
+  <text x="25.67" y="8" text-anchor="middle" font-size="6" font-weight="bold" fill="#00aa00" font-family="monospace">2</text>
+  <text x="6.33" y="18" text-anchor="middle" font-size="6" font-weight="bold" fill="#00aa00" font-family="monospace">2</text>
+  <text x="25.67" y="18" text-anchor="middle" font-size="6" font-weight="bold" fill="#00aa00" font-family="monospace">2</text>
+  <text x="6.33" y="27" text-anchor="middle" font-size="6" font-weight="bold" fill="#0066ff" font-family="monospace">1</text>
+  <text x="25.67" y="27" text-anchor="middle" font-size="6" font-weight="bold" fill="#0066ff" font-family="monospace">1</text>
+  
+  <!-- Flag -->
+  <g transform="translate(16, 6.33)">
+    <polygon points="-1.5,-1 2,-1 2,1.5" fill="#ff0000"/>
+    <line x1="0" y1="-1" x2="0" y2="2.5" stroke="#333" stroke-width="0.8"/>
+  </g>
+  
+  <!-- Mine -->
+  <g transform="translate(16, 16)">
+    <circle r="2" fill="#000"/>
+    <circle r="1.2" fill="#333"/>
+    <!-- Mine spikes -->
+    <line x1="-3" y1="0" x2="3" y2="0" stroke="#000" stroke-width="0.5"/>
+    <line x1="0" y1="-3" x2="0" y2="3" stroke="#000" stroke-width="0.5"/>
+    <line x1="-2" y1="-2" x2="2" y2="2" stroke="#000" stroke-width="0.5"/>
+    <line x1="2" y1="-2" x2="-2" y2="2" stroke="#000" stroke-width="0.5"/>
+  </g>
+</svg>

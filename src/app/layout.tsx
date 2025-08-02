@@ -3,10 +3,15 @@ import Link from 'next/link';
 import './globals.css';
 import { getSession } from '@/lib/session';
 import LogoutButton from '@/components/auth/LogoutButton';
+import Logo from '@/components/ui/logo';
 
 export const metadata: Metadata = {
   title: 'Minesweeper',
-  description: 'Minesweeper game built with Next.js',
+  description: 'Clear the minefield by revealing all safe cells. Flag the mines and use logic to win!',
+  icons: {
+    icon: '/favicon.svg',
+    apple: '/logo.svg',
+  },
 };
 
 export default async function RootLayout({
@@ -19,10 +24,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        <nav className="bg-primary text-primary-foreground p-4">
+        <nav className="bg-primary text-primary-foreground p-2">
           <div className="container mx-auto flex justify-between items-center">
-            <Link href="/" className="font-bold text-lg sm:text-xl">
-              Minesweeper
+            <Link href="/" className="hover:opacity-80 transition-opacity">
+              <Logo size="md" showText={true} />
             </Link>
             <div className="flex items-center gap-2 sm:gap-4">
               <div className="hidden sm:flex gap-4 items-center">
