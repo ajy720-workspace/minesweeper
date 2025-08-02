@@ -12,21 +12,21 @@ const Cell: React.FC<CellProps> = ({ cell, isFocused, onMouseDown }) => {
   const getNumberColor = (num: number) => {
     switch (num) {
       case 1:
-        return 'text-blue-600';
+        return 'text-[var(--mine-1)]';
       case 2:
-        return 'text-green-600';
+        return 'text-[var(--mine-2)]';
       case 3:
-        return 'text-destructive';
+        return 'text-[var(--mine-3)]';
       case 4:
-        return 'text-purple-600';
+        return 'text-[var(--mine-4)]';
       case 5:
-        return 'text-red-800';
+        return 'text-[var(--mine-5)]';
       case 6:
-        return 'text-teal-600';
+        return 'text-[var(--mine-6)]';
       case 7:
-        return 'text-[var(--game-text-primary)]';
+        return 'text-[var(--mine-7)]';
       case 8:
-        return 'text-[var(--game-text-muted)]';
+        return 'text-[var(--mine-8)]';
       default:
         return '';
     }
