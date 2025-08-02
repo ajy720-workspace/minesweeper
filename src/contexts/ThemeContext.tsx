@@ -1,16 +1,16 @@
-'use client'
+'use client';
 
-import { createContext, useContext } from 'react'
-import type { ThemeContextType } from '@/types/theme'
+import { createContext, useContext } from 'react';
+import type { ThemeContextType } from '@/types/theme';
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function useTheme() {
-  const context = useContext(ThemeContext)
+  const context = useContext(ThemeContext);
   if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider')
+    throw new Error('useTheme must be used within a ThemeProvider');
   }
-  return context
+  return context;
 }
 
-export { ThemeContext }
+export { ThemeContext };

@@ -31,6 +31,9 @@ const Game: React.FC<GameProps> = ({ session }) => {
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [showKeyboardCursor, setShowKeyboardCursor] = useState(false);
+  // const [gameId, setGameId] = useState<string>(''); // Future: unique game session tracking
+  const [scoreSaved, setScoreSaved] = useState(false);
+  const [finalClearTimeMs, setFinalClearTimeMs] = useState<number | null>(null);
 
   const initializeBoard = useCallback(() => {
     const settings = DIFFICULTY_SETTINGS[difficulty];
@@ -59,6 +62,9 @@ const Game: React.FC<GameProps> = ({ session }) => {
     setIsResultModalOpen(false);
     setSaveStatus('idle');
     setShowKeyboardCursor(false);
+    // Reset score saving flag to allow saving for new game
+    setScoreSaved(false);
+    setFinalClearTimeMs(null);
   }, [difficulty]);
 
   useEffect(() => {
@@ -84,6 +90,9 @@ const Game: React.FC<GameProps> = ({ session }) => {
   const handleSaveRecord = useCallback(
     async (username: string, password?: string) => {
       setSaveStatus('saving');
+      // Use the captured final clear time (immutable once game ends) instead of recalculating
+      const clearTimeMs = finalClearTimeMs || (gameStartTime ? Date.now() - gameStartTime : timer * 1000);
+
       let userId: number;
 
       if (session) {
@@ -101,9 +110,6 @@ const Game: React.FC<GameProps> = ({ session }) => {
         userId = result.user.id;
       }
 
-      // Calculate precise clear time in milliseconds
-      const clearTimeMs = gameStartTime ? Date.now() - gameStartTime : timer * 1000;
-
       const gameData = {
         difficulty: difficulty,
         win: gameState === 'won',
@@ -116,34 +122,45 @@ const Game: React.FC<GameProps> = ({ session }) => {
         setSaveStatus('error');
       } else {
         setSaveStatus('saved');
+        setScoreSaved(true);
       }
     },
-    [session, difficulty, gameState, timer, score, gameStartTime],
+    [session, difficulty, gameState, timer, score, gameStartTime, finalClearTimeMs],
   );
 
   useEffect(() => {
-    if (gameState === 'won' || gameState === 'lost') {
+    if ((gameState === 'won' || gameState === 'lost') && !scoreSaved) {
       setIsResultModalOpen(true);
       if (session) {
         handleSaveRecord(session.username);
       }
     }
-  }, [gameState, session, handleSaveRecord]);
+  }, [gameState, session, handleSaveRecord, scoreSaved]);
 
   const checkWinCondition = useCallback((currentBoard: BoardType): boolean => {
     return currentBoard.every((row) => row.every((cell) => cell.isMine || cell.isRevealed));
   }, []);
 
+  const captureGameEndTime = useCallback(() => {
+    if (gameStartTime && !finalClearTimeMs) {
+      const endTime = Date.now() - gameStartTime;
+      setFinalClearTimeMs(endTime);
+      return endTime;
+    }
+    return finalClearTimeMs || timer * 1000;
+  }, [gameStartTime, finalClearTimeMs, timer]);
+
   const updateBoardState = useCallback(
     (newBoard: BoardType) => {
       if (checkWinCondition(newBoard)) {
+        captureGameEndTime(); // Capture exact win time
         setGameState('won');
         setScore((prev) => prev + 500); // Win bonus
         audioManager.playSound('win');
       }
       setBoard(newBoard);
     },
-    [checkWinCondition],
+    [checkWinCondition, captureGameEndTime],
   );
 
   const handleCellClick = useCallback(
@@ -175,21 +192,20 @@ const Game: React.FC<GameProps> = ({ session }) => {
         if (JSON.stringify(board) !== JSON.stringify(newBoard)) {
           setScore((prev) => prev + 50); // Chord click bonus
           audioManager.playSound('chord');
-          
+
           // Check if chord revealed any mines (game over)
-          const hasRevealedMine = newBoard.some((row) =>
-            row.some((cell) => cell.isMine && cell.isRevealed)
-          );
-          
+          const hasRevealedMine = newBoard.some((row) => row.some((cell) => cell.isMine && cell.isRevealed));
+
           if (hasRevealedMine) {
+            captureGameEndTime(); // Capture exact loss time
             setGameState('lost');
             audioManager.playSound('explosion');
             // Find the first exploded mine for visual indication
-            let explodedX = -1, explodedY = -1;
+            let explodedX = -1,
+              explodedY = -1;
             for (let row = 0; row < newBoard.length; row++) {
               for (let col = 0; col < newBoard[row].length; col++) {
-                if (newBoard[row][col].isMine && newBoard[row][col].isRevealed && 
-                    !board[row][col].isRevealed) {
+                if (newBoard[row][col].isMine && newBoard[row][col].isRevealed && !board[row][col].isRevealed) {
                   explodedX = col;
                   explodedY = row;
                   break;
@@ -197,7 +213,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
               }
               if (explodedX !== -1) break;
             }
-            
+
             const finalBoard = newBoard.map((row, rowIndex) =>
               row.map((cell, colIndex) => {
                 if (cell.isMine) {
@@ -218,6 +234,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
       } else {
         const newBoard = revealCell(board, x, y);
         if (newBoard[y][x].isMine && newBoard[y][x].isRevealed) {
+          captureGameEndTime(); // Capture exact loss time
           setGameState('lost');
           audioManager.playSound('explosion');
           const finalBoard = newBoard.map((row, rowIndex) =>
@@ -240,7 +257,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
         updateBoardState(newBoard);
       }
     },
-    [gameState, board, isFirstClick, difficulty, updateBoardState],
+    [gameState, board, isFirstClick, difficulty, updateBoardState, captureGameEndTime],
   );
 
   const toggleMark = useCallback(
@@ -315,21 +332,20 @@ const Game: React.FC<GameProps> = ({ session }) => {
               if (JSON.stringify(board) !== JSON.stringify(newBoard)) {
                 setScore((prev) => prev + 50);
                 audioManager.playSound('chord');
-                
+
                 // Check if chord revealed any mines (game over)
-                const hasRevealedMine = newBoard.some((row) =>
-                  row.some((cell) => cell.isMine && cell.isRevealed)
-                );
-                
+                const hasRevealedMine = newBoard.some((row) => row.some((cell) => cell.isMine && cell.isRevealed));
+
                 if (hasRevealedMine) {
+                  captureGameEndTime(); // Capture exact loss time
                   setGameState('lost');
                   audioManager.playSound('explosion');
                   // Find the first exploded mine for visual indication
-                  let explodedX = -1, explodedY = -1;
+                  let explodedX = -1,
+                    explodedY = -1;
                   for (let row = 0; row < newBoard.length; row++) {
                     for (let col = 0; col < newBoard[row].length; col++) {
-                      if (newBoard[row][col].isMine && newBoard[row][col].isRevealed && 
-                          !board[row][col].isRevealed) {
+                      if (newBoard[row][col].isMine && newBoard[row][col].isRevealed && !board[row][col].isRevealed) {
                         explodedX = col;
                         explodedY = row;
                         break;
@@ -337,7 +353,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
                     }
                     if (explodedX !== -1) break;
                   }
-                  
+
                   const finalBoard = newBoard.map((row, rowIndex) =>
                     row.map((cell, colIndex) => {
                       if (cell.isMine) {
@@ -401,7 +417,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
           gameResult={{
             status: gameState as 'won' | 'lost',
             time: timer,
-            timeMs: gameStartTime ? Date.now() - gameStartTime : timer * 1000,
+            timeMs: finalClearTimeMs || (gameStartTime ? Date.now() - gameStartTime : timer * 1000),
             score,
             difficulty,
           }}

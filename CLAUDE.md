@@ -168,8 +168,9 @@ This is a Next.js 15 Minesweeper game with user authentication and ranking syste
 **v1.0 Core Features: ✅ 100% COMPLETED**
 
 All core features have been implemented including:
+
 - Complete gameplay mechanics with difficulty selection
-- User authentication and session management  
+- User authentication and session management
 - Database integration with game records
 - Ranking and profile pages
 - Audio system with Web Audio API
@@ -180,6 +181,7 @@ All core features have been implemented including:
 **Next Development Phase (v1.1):**
 
 See `BACKLOG.md` for upcoming features:
+
 - Custom difficulty settings
 - Theme system (dark/light mode)
 - Enhanced statistics dashboard

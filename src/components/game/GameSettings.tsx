@@ -34,10 +34,14 @@ const GameSettings: React.FC<GameSettingsProps> = ({ onRestart }) => {
 
   const getThemeIcon = () => {
     switch (theme) {
-      case 'light': return '☀️';
-      case 'dark': return '🌙';
-      case 'system': return '💻';
-      default: return '🎨';
+      case 'light':
+        return '☀️';
+      case 'dark':
+        return '🌙';
+      case 'system':
+        return '💻';
+      default:
+        return '🎨';
     }
   };
 
@@ -48,7 +52,7 @@ const GameSettings: React.FC<GameSettingsProps> = ({ onRestart }) => {
         {/* Audio Toggle */}
         <Button
           size="sm"
-          variant={isMuted ? "outline" : "default"}
+          variant={isMuted ? 'outline' : 'default'}
           onClick={handleMuteToggle}
           className="h-9 w-9 p-0"
           title={isMuted ? 'Enable sound effects' : 'Disable sound effects'}
@@ -57,13 +61,7 @@ const GameSettings: React.FC<GameSettingsProps> = ({ onRestart }) => {
         </Button>
 
         {/* Restart Game */}
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={onRestart}
-          className="h-9 w-9 p-0"
-          title="Restart game"
-        >
+        <Button size="sm" variant="outline" onClick={onRestart} className="h-9 w-9 p-0" title="Restart game">
           🔄
         </Button>
 
@@ -81,7 +79,7 @@ const GameSettings: React.FC<GameSettingsProps> = ({ onRestart }) => {
         {/* Color Theme Settings Toggle */}
         <Button
           size="sm"
-          variant={showThemeSettings ? "default" : "outline"}
+          variant={showThemeSettings ? 'default' : 'outline'}
           onClick={() => setShowThemeSettings(!showThemeSettings)}
           className="h-9 w-9 p-0"
           title={showThemeSettings ? 'Hide color themes' : 'Show color themes'}

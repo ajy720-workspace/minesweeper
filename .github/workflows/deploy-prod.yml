@@ -20,7 +20,7 @@ jobs:
     outputs:
       image-tag: ${{ steps.meta.outputs.tags }}
       image-digest: ${{ steps.meta.outputs.digest }}
-      
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -69,7 +69,7 @@ jobs:
     permissions:
       contents: read
       packages: read
-      
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -94,10 +94,10 @@ jobs:
           # Extract the first tag (prod-latest) from the multi-line tags output
           IMAGE_TAG=$(echo "${{ needs.build-and-push.outputs.image-tag }}" | head -n1)
           echo "Using image tag: $IMAGE_TAG"
-          
+
           # Stop existing containers
           docker compose -f ${{ github.workspace }}/docker-compose.prod.yml down || true
-          
+
           # Start new containers with updated image
           IMAGE_NAME_WITH_TAG="$IMAGE_TAG" docker compose -f ${{ github.workspace }}/docker-compose.prod.yml up -d
 
