@@ -1,6 +1,5 @@
 import Game from '@/components/game/Game';
 import { getSession } from '@/lib/session';
-import Logo from '@/components/ui/logo';
 
 export default async function HomePage() {
   const session = await getSession();
