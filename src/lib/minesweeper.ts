@@ -15,6 +15,8 @@ export type CellState = {
   isQuestioned: boolean;
   /** Number of mines in the 8 adjacent cells */
   adjacentMines: number;
+  /** Whether this mine exploded (caused game over) */
+  isExploded?: boolean;
 };
 
 /**

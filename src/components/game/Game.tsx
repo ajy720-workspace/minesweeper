@@ -44,6 +44,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
             isFlagged: false,
             isQuestioned: false,
             adjacentMines: 0,
+            isExploded: false,
           }) as CellState,
       ),
     );
@@ -174,6 +175,44 @@ const Game: React.FC<GameProps> = ({ session }) => {
         if (JSON.stringify(board) !== JSON.stringify(newBoard)) {
           setScore((prev) => prev + 50); // Chord click bonus
           audioManager.playSound('chord');
+          
+          // Check if chord revealed any mines (game over)
+          const hasRevealedMine = newBoard.some((row) =>
+            row.some((cell) => cell.isMine && cell.isRevealed)
+          );
+          
+          if (hasRevealedMine) {
+            setGameState('lost');
+            audioManager.playSound('explosion');
+            // Find the first exploded mine for visual indication
+            let explodedX = -1, explodedY = -1;
+            for (let row = 0; row < newBoard.length; row++) {
+              for (let col = 0; col < newBoard[row].length; col++) {
+                if (newBoard[row][col].isMine && newBoard[row][col].isRevealed && 
+                    !board[row][col].isRevealed) {
+                  explodedX = col;
+                  explodedY = row;
+                  break;
+                }
+              }
+              if (explodedX !== -1) break;
+            }
+            
+            const finalBoard = newBoard.map((row, rowIndex) =>
+              row.map((cell, colIndex) => {
+                if (cell.isMine) {
+                  return {
+                    ...cell,
+                    isRevealed: true,
+                    isExploded: rowIndex === explodedY && colIndex === explodedX, // Mark the exploded mine
+                  };
+                }
+                return cell;
+              }),
+            );
+            setBoard(finalBoard);
+            return;
+          }
         }
         updateBoardState(newBoard);
       } else {
@@ -181,8 +220,17 @@ const Game: React.FC<GameProps> = ({ session }) => {
         if (newBoard[y][x].isMine && newBoard[y][x].isRevealed) {
           setGameState('lost');
           audioManager.playSound('explosion');
-          const finalBoard = newBoard.map((row) =>
-            row.map((cell) => (cell.isMine ? { ...cell, isRevealed: true } : cell)),
+          const finalBoard = newBoard.map((row, rowIndex) =>
+            row.map((cell, colIndex) => {
+              if (cell.isMine) {
+                return {
+                  ...cell,
+                  isRevealed: true,
+                  isExploded: rowIndex === y && colIndex === x, // Mark the exploded mine
+                };
+              }
+              return cell;
+            }),
           );
           setBoard(finalBoard);
           return;
@@ -267,6 +315,44 @@ const Game: React.FC<GameProps> = ({ session }) => {
               if (JSON.stringify(board) !== JSON.stringify(newBoard)) {
                 setScore((prev) => prev + 50);
                 audioManager.playSound('chord');
+                
+                // Check if chord revealed any mines (game over)
+                const hasRevealedMine = newBoard.some((row) =>
+                  row.some((cell) => cell.isMine && cell.isRevealed)
+                );
+                
+                if (hasRevealedMine) {
+                  setGameState('lost');
+                  audioManager.playSound('explosion');
+                  // Find the first exploded mine for visual indication
+                  let explodedX = -1, explodedY = -1;
+                  for (let row = 0; row < newBoard.length; row++) {
+                    for (let col = 0; col < newBoard[row].length; col++) {
+                      if (newBoard[row][col].isMine && newBoard[row][col].isRevealed && 
+                          !board[row][col].isRevealed) {
+                        explodedX = col;
+                        explodedY = row;
+                        break;
+                      }
+                    }
+                    if (explodedX !== -1) break;
+                  }
+                  
+                  const finalBoard = newBoard.map((row, rowIndex) =>
+                    row.map((cell, colIndex) => {
+                      if (cell.isMine) {
+                        return {
+                          ...cell,
+                          isRevealed: true,
+                          isExploded: rowIndex === explodedY && colIndex === explodedX, // Mark the exploded mine
+                        };
+                      }
+                      return cell;
+                    }),
+                  );
+                  setBoard(finalBoard);
+                  return;
+                }
               }
               updateBoardState(newBoard);
             }
