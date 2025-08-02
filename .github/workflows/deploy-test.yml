@@ -61,6 +61,7 @@ jobs:
     permissions:
       contents: read
       packages: read
+      issues: write
 
     steps:
       - name: Checkout code
@@ -127,6 +128,8 @@ jobs:
   notify-label-removed:
     runs-on: self-hosted
     if: github.event.action == 'unlabeled' && github.event.label.name == 'deploy:test'
+    permissions:
+      issues: write
 
     steps:
       - name: Comment PR about deployment stopping
