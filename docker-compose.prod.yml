@@ -1,0 +1,13 @@
+# Docker Compose for Production Environment
+services:
+  minesweeper-prod:
+    image: ${IMAGE_NAME_WITH_TAG:-ghcr.io/ajy720/minesweeper:prod-latest}
+    container_name: minesweeper-prod
+    ports:
+      - "5000:3000"
+    env_file:
+      - .env.prod
+    restart: unless-stopped
+    labels:
+      - "environment=production"
+      - "app=minesweeper"
