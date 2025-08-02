@@ -7,8 +7,10 @@ import { Difficulty, DIFFICULTY_SETTINGS } from '@/types';
 import Board from './Board';
 import DifficultySelector from './DifficultySelector';
 import GameInfoBar from './GameInfoBar';
+import GameSettings from './GameSettings';
 import { loginOrRegister, saveGameRecord } from '@/app/auth/actions';
 import { GameResultModal } from './GameResultModal';
+import { audioManager } from '@/lib/audio';
 
 type GameState = 'playing' | 'won' | 'lost';
 
@@ -136,6 +138,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
       if (checkWinCondition(newBoard)) {
         setGameState('won');
         setScore((prev) => prev + 500); // Win bonus
+        audioManager.playSound('win');
       }
       setBoard(newBoard);
     },
@@ -145,6 +148,9 @@ const Game: React.FC<GameProps> = ({ session }) => {
   const handleCellClick = useCallback(
     (x: number, y: number) => {
       if (gameState !== 'playing' || !board[y]?.[x]) return;
+
+      // Initialize audio on first user interaction
+      audioManager.initialize();
 
       // Hide keyboard cursor when using mouse
       setShowKeyboardCursor(false);
@@ -156,6 +162,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
         const revealedBoard = revealCell(newBoard, x, y);
         setIsFirstClick(false);
         setScore((prev) => prev + 10); // First click score
+        audioManager.playSound('click');
         updateBoardState(revealedBoard);
         return;
       }
@@ -166,12 +173,14 @@ const Game: React.FC<GameProps> = ({ session }) => {
         // Check if chord action revealed any new cells
         if (JSON.stringify(board) !== JSON.stringify(newBoard)) {
           setScore((prev) => prev + 50); // Chord click bonus
+          audioManager.playSound('chord');
         }
         updateBoardState(newBoard);
       } else {
         const newBoard = revealCell(board, x, y);
         if (newBoard[y][x].isMine && newBoard[y][x].isRevealed) {
           setGameState('lost');
+          audioManager.playSound('explosion');
           const finalBoard = newBoard.map((row) =>
             row.map((cell) => (cell.isMine ? { ...cell, isRevealed: true } : cell)),
           );
@@ -179,6 +188,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
           return;
         }
         setScore((prev) => prev + 10); // Regular click score
+        audioManager.playSound('click');
         updateBoardState(newBoard);
       }
     },
@@ -197,11 +207,13 @@ const Game: React.FC<GameProps> = ({ session }) => {
         cell.isFlagged = true;
         setRemainingMines((prev) => prev - 1);
         setScore((prev) => prev - 5); // Flag penalty
+        audioManager.playSound('flag');
       } else if (cell.isFlagged) {
         cell.isFlagged = false;
         cell.isQuestioned = true;
         setRemainingMines((prev) => prev + 1);
         setScore((prev) => prev + 5); // Remove flag bonus
+        audioManager.playSound('unflag');
       } else if (cell.isQuestioned) {
         cell.isQuestioned = false;
       }
@@ -254,6 +266,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
               const newBoard = chordCell(board, x, y);
               if (JSON.stringify(board) !== JSON.stringify(newBoard)) {
                 setScore((prev) => prev + 50);
+                audioManager.playSound('chord');
               }
               updateBoardState(newBoard);
             }
@@ -293,6 +306,7 @@ const Game: React.FC<GameProps> = ({ session }) => {
             onCellContextMenu={handleCellContextMenu}
           />
         </div>
+        <GameSettings onRestart={initializeBoard} />
       </div>
       {isResultModalOpen && (
         <GameResultModal
