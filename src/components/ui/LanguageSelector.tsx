@@ -42,25 +42,23 @@ export function LanguageSelector({ variant = 'toggle', className }: LanguageSele
   if (variant === 'toggle') {
     return (
       <Tooltip content={`${currentLang.name}`}>
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={cycleLanguage}
-            disabled={isLoading}
-            className={`h-9 w-9 p-0 ${className}`}
-            aria-label={`Change language. Current: ${currentLang.name}`}
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={cycleLanguage}
+          disabled={isLoading}
+          className={`h-8 w-8 p-0 ${className}`}
+          aria-label={`Change language. Current: ${currentLang.name}`}
+        >
+          <motion.div
+            key={locale}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.2 }}
           >
-            <motion.div
-              key={locale}
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.2 }}
-            >
-              {currentLang.flag}
-            </motion.div>
-          </Button>
-        </motion.div>
+            {currentLang.flag}
+          </motion.div>
+        </Button>
       </Tooltip>
     );
   }
@@ -73,20 +71,18 @@ export function LanguageSelector({ variant = 'toggle', className }: LanguageSele
 
         return (
           <Tooltip key={lang} content={langInfo.name}>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button
-                size="sm"
-                variant={isActive ? 'default' : 'outline'}
-                onClick={() => setLocale(lang)}
-                disabled={isLoading}
-                className="h-8 px-3"
-                aria-pressed={isActive}
-                aria-label={`Switch to ${langInfo.name}`}
-              >
-                <span className="mr-1">{langInfo.flag}</span>
-                <span className="text-xs font-mono">{langInfo.short}</span>
-              </Button>
-            </motion.div>
+            <Button
+              size="sm"
+              variant={isActive ? 'default' : 'outline'}
+              onClick={() => setLocale(lang)}
+              disabled={isLoading}
+              className="h-8 px-3"
+              aria-pressed={isActive}
+              aria-label={`Switch to ${langInfo.name}`}
+            >
+              <span className="mr-1">{langInfo.flag}</span>
+              <span className="text-xs font-mono">{langInfo.short}</span>
+            </Button>
           </Tooltip>
         );
       })}
