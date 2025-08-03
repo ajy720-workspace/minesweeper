@@ -1,23 +1,31 @@
 // src/components/ranking/UserStats.tsx
-import { getUserRankingStats } from '@/app/ranking/actions';
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useRankingTranslation, useGameTranslation } from '@/hooks/useTranslation';
+import { Database } from '@/types/supabase';
+
+type UserStatsData = Database['public']['Functions']['get_user_ranking_stats']['Returns'][number];
 
 interface UserStatsProps {
-  userId: number;
   difficulty: string;
+  userStats: UserStatsData | null;
 }
 
-export default async function UserStats({ userId, difficulty }: UserStatsProps) {
-  const { data: stats } = await getUserRankingStats(userId, difficulty);
+export default function UserStats({ difficulty, userStats: stats }: UserStatsProps) {
+  const tRanking = useRankingTranslation();
+  const tGame = useGameTranslation();
 
   if (!stats || stats.best_time_ms === null) {
     return (
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Your Stats for {difficulty}</CardTitle>
+          <CardTitle>
+            {tRanking('yourStats')} - {tGame(`difficulty.${difficulty}`)}
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <p>You have no records for this difficulty yet.</p>
+          <p>{tRanking('noData')}</p>
         </CardContent>
       </Card>
     );
@@ -26,14 +34,16 @@ export default async function UserStats({ userId, difficulty }: UserStatsProps) 
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle>Your Stats for {difficulty}</CardTitle>
+        <CardTitle>
+          {tRanking('yourStats')} - {tGame(`difficulty.${difficulty}`)}
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
         <p>
-          <strong>Best Time:</strong> {(stats.best_time_ms / 1000).toFixed(2)}s
+          <strong>{tRanking('table.time')}:</strong> {(stats.best_time_ms / 1000).toFixed(2)}s
         </p>
         <p>
-          <strong>Rank:</strong> {stats.user_rank} / {stats.total_players}
+          <strong>{tRanking('table.rank')}:</strong> {stats.user_rank} / {stats.total_players}
         </p>
         <p>
           <strong>Percentile:</strong> Top {stats.percentile?.toFixed(2)}%

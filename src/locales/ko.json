@@ -1,0 +1,199 @@
+{
+  "common": {
+    "username": "사용자명",
+    "password": "비밀번호",
+    "time": "시간",
+    "score": "점수",
+    "close": "닫기",
+    "playAgain": "다시 하기",
+    "saveScore": "점수 저장",
+    "saving": "저장 중...",
+    "newGame": "새 게임"
+  },
+  "navigation": {
+    "ranking": "랭킹",
+    "profile": "내 프로필",
+    "rankShort": "랭킹",
+    "profileShort": "프로필",
+    "welcome": "환영합니다, {username}님!",
+    "notLoggedIn": "로그인되지 않음"
+  },
+  "game": {
+    "difficulty": {
+      "beginner": "초급",
+      "intermediate": "중급",
+      "expert": "고급"
+    },
+    "ui": {
+      "mines": "지뢰",
+      "mode": "모드",
+      "score": "점수",
+      "time": "시간"
+    },
+    "result": {
+      "win": "🎉 축하합니다!",
+      "lose": "💥 게임 오버",
+      "victoryAchieved": "🏆 승리 달성!"
+    },
+    "actions": {
+      "saveScorePrompt": "로그인하거나 새 계정을 만들어 점수를 저장하세요:",
+      "scoreSavedFor": "<strong>{username}</strong>님의 점수가 저장되었습니다",
+      "autoSaved": "<strong>{username}</strong>님의 점수가 자동으로 저장되었습니다"
+    },
+    "loading": {
+      "savingScore": "점수를 저장하는 중..."
+    },
+    "settings": {
+      "audioOn": "효과음 켜기",
+      "audioOff": "효과음 끄기",
+      "restart": "게임 다시 시작",
+      "theme": "현재 테마: {theme} (클릭하여 변경)",
+      "colorThemeShow": "컬러 테마 보기",
+      "colorThemeHide": "컬러 테마 숨기기",
+      "help": "게임 도움말 및 키보드 단축키"
+    },
+    "help": {
+      "title": "🎮 마인스위퍼 가이드",
+      "gameRules": "📋 게임 규칙",
+      "keyboardShortcuts": "⌨️ 키보드 단축키",
+      "scoringSystem": "🏆 점수 시스템",
+      "tip": "💡 **팁:** 마우스와 키보드를 모두 활용하면 더 빠른 플레이가 가능합니다!",
+      "rules": {
+        "objective": {
+          "title": "게임 목표",
+          "content": "모든 지뢰를 피해 모든 안전한 셀을 열어라"
+        },
+        "numbers": {
+          "title": "숫자의 의미",
+          "content": "각 숫자는 인접한 8개 셀에 있는 지뢰의 개수를 나타냄"
+        },
+        "flagging": {
+          "title": "깃발 사용",
+          "content": "지뢰가 있다고 생각되는 셀에 깃발을 설치"
+        },
+        "chording": {
+          "title": "코드 클릭",
+          "content": "숫자 셀을 클릭하면 주변의 깃발이 아닌 셀들을 자동으로 열기"
+        },
+        "safeStart": {
+          "title": "첫 클릭 보장",
+          "content": "첫 번째 클릭은 항상 안전 (3x3 영역이 지뢰 없음)"
+        }
+      },
+      "shortcuts": {
+        "arrows": {
+          "key": "방향키",
+          "description": "셀 이동 (키보드 모드)"
+        },
+        "space": {
+          "key": "Space",
+          "description": "셀 열기"
+        },
+        "shiftSpace": {
+          "key": "Shift + Space",
+          "description": "코드 클릭 (주변 셀 자동 열기)"
+        },
+        "flag": {
+          "key": "F 또는 1",
+          "description": "깃발 설치/제거"
+        },
+        "question": {
+          "key": "Q 또는 2",
+          "description": "물음표 표시/제거"
+        }
+      },
+      "scoring": {
+        "openCell": {
+          "action": "셀 열기",
+          "points": "+10점"
+        },
+        "placeFlag": {
+          "action": "깃발 설치",
+          "points": "-5점"
+        },
+        "removeFlag": {
+          "action": "깃발 제거",
+          "points": "+5점"
+        },
+        "chordClick": {
+          "action": "코드 클릭",
+          "points": "+50점"
+        },
+        "gameWin": {
+          "action": "게임 승리",
+          "points": "+500점"
+        }
+      }
+    }
+  },
+  "auth": {
+    "errors": {
+      "usernameRequired": "사용자명을 입력해주세요.",
+      "usernameLength": "사용자명은 3글자 이상 20글자 이하로 입력해주세요.",
+      "networkError": "네트워크 연결에 문제가 있습니다. 잠시 후 다시 시도해주세요.",
+      "existingUser": "기존 사용자입니다. 비밀번호를 입력해주세요.",
+      "passwordLength": "비밀번호는 6글자 이상이어야 합니다.",
+      "invalidCredentials": "사용자명 또는 비밀번호가 올바르지 않습니다.",
+      "newUserPassword": "새 계정을 만들려면 비밀번호를 입력해주세요.",
+      "usernameTaken": "이미 사용 중인 사용자명입니다. 다른 이름을 선택해주세요.",
+      "createAccountFailed": "계정 생성에 실패했습니다. 잠시 후 다시 시도해주세요.",
+      "unexpectedError": "예상치 못한 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      "userAuthError": "사용자 인증에 문제가 있습니다. 다시 로그인해주세요.",
+      "invalidDifficulty": "게임 난이도 정보가 올바르지 않습니다.",
+      "invalidGameResult": "게임 결과 정보가 올바르지 않습니다.",
+      "invalidTime": "게임 시간 정보가 올바르지 않습니다.",
+      "invalidScore": "점수 정보가 올바르지 않습니다.",
+      "saveRecordFailed": "게임 기록 저장에 실패했습니다. 네트워크를 확인하고 다시 시도해주세요.",
+      "saveError": "기록 저장 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요."
+    }
+  },
+  "theme": {
+    "names": {
+      "light": "라이트",
+      "dark": "다크",
+      "system": "시스템"
+    }
+  },
+  "error": {
+    "general": "❌ 점수 저장에 실패했습니다. 다시 시도해주세요."
+  },
+  "profile": {
+    "title": "내 프로필",
+    "welcomeBack": "환영합니다, {username}님!",
+    "statistics": "통계",
+    "gameHistory": "게임 기록",
+    "loading": {
+      "statistics": "통계를 불러오는 중...",
+      "gameHistory": "게임 기록을 불러오는 중..."
+    },
+    "stats": {
+      "totalGames": "총 게임 수",
+      "wins": "승리",
+      "winRate": "승률",
+      "bestTime": "최고 기록",
+      "averageTime": "평균 시간",
+      "totalScore": "총 점수",
+      "bestScore": "최고 점수",
+      "averageScore": "평균 점수",
+      "ranking": "순위"
+    },
+    "noData": "아직 플레이한 게임이 없습니다",
+    "difficulty": "난이도"
+  },
+  "ranking": {
+    "title": "랭킹",
+    "yourStats": "내 통계",
+    "loading": {
+      "stats": "통계를 불러오는 중...",
+      "ranking": "랭킹을 불러오는 중..."
+    },
+    "table": {
+      "rank": "순위",
+      "player": "플레이어",
+      "time": "시간",
+      "score": "점수",
+      "date": "날짜"
+    },
+    "noData": "랭킹 데이터가 없습니다"
+  }
+}

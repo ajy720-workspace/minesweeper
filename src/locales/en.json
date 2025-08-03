@@ -1,0 +1,199 @@
+{
+  "common": {
+    "username": "Username",
+    "password": "Password",
+    "time": "Time",
+    "score": "Score",
+    "close": "Close",
+    "playAgain": "Play Again",
+    "saveScore": "Save Score",
+    "saving": "Saving...",
+    "newGame": "New Game"
+  },
+  "navigation": {
+    "ranking": "Ranking",
+    "profile": "My Profile",
+    "rankShort": "Rank",
+    "profileShort": "Profile",
+    "welcome": "Welcome, {username}!",
+    "notLoggedIn": "Not logged in"
+  },
+  "game": {
+    "difficulty": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "expert": "Expert"
+    },
+    "ui": {
+      "mines": "Mines",
+      "mode": "Mode",
+      "score": "Score",
+      "time": "Time"
+    },
+    "result": {
+      "win": "🎉 Congratulations!",
+      "lose": "💥 Game Over",
+      "victoryAchieved": "🏆 Victory achieved!"
+    },
+    "actions": {
+      "saveScorePrompt": "Save your score by logging in or creating a new account:",
+      "scoreSavedFor": "Score saved for <strong>{username}</strong>",
+      "autoSaved": "Score automatically saved for <strong>{username}</strong>"
+    },
+    "loading": {
+      "savingScore": "Saving your score..."
+    },
+    "settings": {
+      "audioOn": "Turn on sound effects",
+      "audioOff": "Turn off sound effects",
+      "restart": "Restart game",
+      "theme": "Current theme: {theme} (click to change)",
+      "colorThemeShow": "Show color themes",
+      "colorThemeHide": "Hide color themes",
+      "help": "Game help and keyboard shortcuts"
+    },
+    "help": {
+      "title": "🎮 Minesweeper Guide",
+      "gameRules": "📋 Game Rules",
+      "keyboardShortcuts": "⌨️ Keyboard Shortcuts",
+      "scoringSystem": "🏆 Scoring System",
+      "tip": "💡 **Tip:** Use both mouse and keyboard for faster gameplay!",
+      "rules": {
+        "objective": {
+          "title": "Game Objective",
+          "content": "Clear all safe cells while avoiding all mines"
+        },
+        "numbers": {
+          "title": "Number Meaning",
+          "content": "Each number shows how many mines are in the 8 adjacent cells"
+        },
+        "flagging": {
+          "title": "Flag Usage",
+          "content": "Place flags on cells you think contain mines"
+        },
+        "chording": {
+          "title": "Chord Click",
+          "content": "Click on revealed numbers to auto-open adjacent non-flagged cells"
+        },
+        "safeStart": {
+          "title": "Safe First Click",
+          "content": "First click is always safe (3x3 area has no mines)"
+        }
+      },
+      "shortcuts": {
+        "arrows": {
+          "key": "Arrow Keys",
+          "description": "Move cell cursor (keyboard mode)"
+        },
+        "space": {
+          "key": "Space",
+          "description": "Open cell"
+        },
+        "shiftSpace": {
+          "key": "Shift + Space",
+          "description": "Chord click (auto-open adjacent cells)"
+        },
+        "flag": {
+          "key": "F or 1",
+          "description": "Toggle flag"
+        },
+        "question": {
+          "key": "Q or 2",
+          "description": "Toggle question mark"
+        }
+      },
+      "scoring": {
+        "openCell": {
+          "action": "Open Cell",
+          "points": "+10 pts"
+        },
+        "placeFlag": {
+          "action": "Place Flag",
+          "points": "-5 pts"
+        },
+        "removeFlag": {
+          "action": "Remove Flag",
+          "points": "+5 pts"
+        },
+        "chordClick": {
+          "action": "Chord Click",
+          "points": "+50 pts"
+        },
+        "gameWin": {
+          "action": "Game Win",
+          "points": "+500 pts"
+        }
+      }
+    }
+  },
+  "auth": {
+    "errors": {
+      "usernameRequired": "Please enter a username.",
+      "usernameLength": "Username must be between 3 and 20 characters.",
+      "networkError": "Network connection problem. Please try again later.",
+      "existingUser": "Existing user. Please enter your password.",
+      "passwordLength": "Password must be at least 6 characters.",
+      "invalidCredentials": "Invalid username or password.",
+      "newUserPassword": "To create a new account, please enter a password.",
+      "usernameTaken": "Username is already taken. Please choose a different one.",
+      "createAccountFailed": "Failed to create account. Please try again later.",
+      "unexpectedError": "An unexpected error occurred. Please try again later.",
+      "userAuthError": "User authentication problem. Please log in again.",
+      "invalidDifficulty": "Game difficulty information is invalid.",
+      "invalidGameResult": "Game result information is invalid.",
+      "invalidTime": "Game time information is invalid.",
+      "invalidScore": "Score information is invalid.",
+      "saveRecordFailed": "Failed to save game record. Please check your network and try again.",
+      "saveError": "Problem occurred while saving record. Please try again later."
+    }
+  },
+  "theme": {
+    "names": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+  "error": {
+    "general": "❌ Failed to save score. Please try again."
+  },
+  "profile": {
+    "title": "My Profile",
+    "welcomeBack": "Welcome back, {username}!",
+    "statistics": "Statistics",
+    "gameHistory": "Game History",
+    "loading": {
+      "statistics": "Loading your statistics...",
+      "gameHistory": "Loading your game history..."
+    },
+    "stats": {
+      "totalGames": "Total Games",
+      "wins": "Wins",
+      "winRate": "Win Rate",
+      "bestTime": "Best Time",
+      "averageTime": "Average Time",
+      "totalScore": "Total Score",
+      "bestScore": "Best Score",
+      "averageScore": "Average Score",
+      "ranking": "Ranking"
+    },
+    "noData": "No games played yet",
+    "difficulty": "Difficulty"
+  },
+  "ranking": {
+    "title": "Ranking",
+    "yourStats": "Your Stats",
+    "loading": {
+      "stats": "Loading your stats...",
+      "ranking": "Loading ranking..."
+    },
+    "table": {
+      "rank": "Rank",
+      "player": "Player",
+      "time": "Time",
+      "score": "Score",
+      "date": "Date"
+    },
+    "noData": "No ranking data available"
+  }
+}

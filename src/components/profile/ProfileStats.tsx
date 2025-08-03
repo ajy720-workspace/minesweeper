@@ -1,21 +1,27 @@
 // src/components/profile/ProfileStats.tsx
-import { getUserRankingStats } from '@/app/ranking/actions';
-import { getUserOverallStats } from '@/app/profile/actions';
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useProfileTranslation } from '@/hooks/useTranslation';
+import { Database } from '@/types/supabase';
+
+type UserStatsData = Database['public']['Functions']['get_user_ranking_stats']['Returns'][number];
+type DifficultyStats = {
+  totalGames: number;
+  wins: number;
+  bestTime: number | null;
+  totalScore: number;
+};
+type OverallStatsData = Record<string, DifficultyStats>;
 
 interface ProfileStatsProps {
-  userId: number;
   difficulty: string;
+  rankingStats: UserStatsData | null;
+  overallStats: OverallStatsData | null;
 }
 
-export default async function ProfileStats({ userId, difficulty }: ProfileStatsProps) {
-  const [rankingResult, overallResult] = await Promise.all([
-    getUserRankingStats(userId, difficulty),
-    getUserOverallStats(userId),
-  ]);
-
-  const { data: rankingStats } = rankingResult;
-  const { data: overallStats } = overallResult;
+export default function ProfileStats({ difficulty, rankingStats, overallStats }: ProfileStatsProps) {
+  const tProfile = useProfileTranslation();
 
   const currentDifficultyStats = overallStats?.[difficulty];
 
@@ -24,7 +30,7 @@ export default async function ProfileStats({ userId, difficulty }: ProfileStatsP
       {/* Overall Stats for Current Difficulty */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Total Games</CardTitle>
+          <CardTitle className="text-sm font-medium">{tProfile('stats.totalGames')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{currentDifficultyStats?.totalGames || 0}</div>
@@ -33,7 +39,7 @@ export default async function ProfileStats({ userId, difficulty }: ProfileStatsP
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium">Win Rate</CardTitle>
+          <CardTitle className="text-sm font-medium">{tProfile('stats.winRate')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">
@@ -49,7 +55,7 @@ export default async function ProfileStats({ userId, difficulty }: ProfileStatsP
         <>
           <Card>
             <CardHeader>
-              <CardTitle className="text-sm font-medium">Best Time</CardTitle>
+              <CardTitle className="text-sm font-medium">{tProfile('stats.bestTime')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{(rankingStats.best_time_ms / 1000).toFixed(2)}s</div>
@@ -58,7 +64,7 @@ export default async function ProfileStats({ userId, difficulty }: ProfileStatsP
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-sm font-medium">Ranking</CardTitle>
+              <CardTitle className="text-sm font-medium">{tProfile('stats.ranking')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">#{rankingStats.user_rank}</div>
@@ -70,16 +76,16 @@ export default async function ProfileStats({ userId, difficulty }: ProfileStatsP
         <>
           <Card>
             <CardHeader>
-              <CardTitle className="text-sm font-medium">Best Time</CardTitle>
+              <CardTitle className="text-sm font-medium">{tProfile('stats.bestTime')}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-muted-foreground">No wins yet</div>
+              <div className="text-2xl font-bold text-muted-foreground">{tProfile('noData')}</div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-sm font-medium">Ranking</CardTitle>
+              <CardTitle className="text-sm font-medium">{tProfile('stats.ranking')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-muted-foreground">Unranked</div>

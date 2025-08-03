@@ -2,6 +2,27 @@
 
 이 문서는 완료된 개발 작업들의 기록입니다. 날짜별로 구성되어 있으며, 프로젝트의 진행 상황을 추적할 수 있습니다.
 
+## [2024-08-03] International i18n System Enhancement
+
+### 🌍 Advanced Internationalization Features
+
+- ✅ **글로벌 언어 전환 시스템 구축**
+  - Navbar에 LanguageSelector 컴포넌트 추가로 전역 언어 설정 접근성 향상
+  - 게임 설정 패널 외 추가 진입점 제공으로 사용자 편의성 대폭 개선
+  - 토글 형태의 직관적인 언어 스위처 (EN/한글)
+
+- ✅ **Profile 및 Ranking 페이지 완전 현지화**
+  - 모든 정적 텍스트 번역 키 추가 (제목, 라벨, 메시지)
+  - 서버/클라이언트 컴포넌트 아키텍처 최적화
+  - 동적 사용자명 삽입 번역 지원 (`welcomeBack` 템플릿)
+  - 통계 항목별 세분화된 번역 (`stats.*` 네임스페이스)
+
+- ✅ **게임 테마 통합 UI 개선**
+  - GameInfoBar 배경색을 게임 컬러 테마와 일치하도록 수정
+  - CSS 커스텀 속성 활용 (`--game-background`, `--game-border-*`)
+  - 3D 시각 효과의 일관된 테두리 스타일링
+  - 모든 게임 테마(기본/블루/퍼플)에서 조화로운 색상 통합
+
 ## [2024-08-03] UI/UX Improvements & Bug Fixes
 
 ### 🎨 UI/UX Enhancement Sprint
