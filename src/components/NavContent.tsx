@@ -42,7 +42,7 @@ export function NavContent({ session }: NavContentProps) {
             {tNav('profileShort')}
           </Link>
         </div>
-        <LanguageSelector variant="toggle" />
+        <LanguageSelector variant="navbar" />
         <ThemeToggle />
         {session ? (
           <div className="flex items-center gap-2">

@@ -6,10 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Tooltip } from '@/components/ui/tooltip';
 import { useLocale } from '@/contexts/LocaleContext';
 import { locales, type Locale } from '@/i18n/config';
-import { motion } from 'framer-motion';
+import { ButtonMotion, FadeInMotion } from '@/components/ui/motion';
 
 interface LanguageSelectorProps {
-  variant?: 'button' | 'toggle';
+  variant?: 'button' | 'toggle' | 'navbar';
   className?: string;
 }
 
@@ -38,8 +38,24 @@ export function LanguageSelector({ variant = 'toggle', className }: LanguageSele
 
     setLocale(nextLocale);
   };
-
   if (variant === 'toggle') {
+    return (
+      <Tooltip content={`${currentLang.name}`}>
+        <ButtonMotion>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={cycleLanguage}
+            disabled={isLoading}
+            className={`h-9 w-9 p-0 ${className}`}
+            aria-label={`Change language. Current: ${currentLang.name}`}
+          >
+            <FadeInMotion key={locale}>{currentLang.flag}</FadeInMotion>
+          </Button>
+        </ButtonMotion>
+      </Tooltip>
+    );
+  } else if (variant === 'navbar') {
     return (
       <Tooltip content={`${currentLang.name}`}>
         <Button
@@ -50,14 +66,7 @@ export function LanguageSelector({ variant = 'toggle', className }: LanguageSele
           className={`h-8 w-8 p-0 ${className}`}
           aria-label={`Change language. Current: ${currentLang.name}`}
         >
-          <motion.div
-            key={locale}
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.2 }}
-          >
-            {currentLang.flag}
-          </motion.div>
+          <FadeInMotion key={locale}>{currentLang.flag}</FadeInMotion>
         </Button>
       </Tooltip>
     );
