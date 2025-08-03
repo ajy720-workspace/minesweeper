@@ -103,7 +103,7 @@ const Cell: React.FC<CellProps> = ({ cell, isFocused, onMouseDown }) => {
   const baseStyle =
     'w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 border flex items-center justify-center text-sm sm:text-base md:text-lg font-bold';
   const revealedStyle = cell.isExploded
-    ? 'border-[var(--cell-border)] bg-red-500'
+    ? 'border-[var(--cell-exploded)] border-2'
     : 'border-[var(--cell-border)] bg-[var(--cell-revealed)]';
   const unrevealedStyle =
     'border-[var(--cell-border)] bg-[var(--cell-background)] hover:bg-[var(--cell-hover)] active:bg-[var(--cell-active)] cursor-pointer transition-colors duration-75 hover:scale-105 active:scale-95';

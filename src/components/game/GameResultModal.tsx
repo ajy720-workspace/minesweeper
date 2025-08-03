@@ -227,12 +227,12 @@ export function GameResultModal({
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.0 }}
                 >
-                  <div className="text-lg font-semibold text-foreground">
+                  <div className="text-lg font-semibold text-neutral-900">
                     {getDifficultyDisplay(gameResult.difficulty)} {tGame('ui.mode')}
                   </div>
                   {gameResult.status === 'won' && (
                     <motion.div
-                      className="text-green-600 font-medium mt-1"
+                      className="text-green-600 font-medium mt-1 bg-red"
                       initial={{ opacity: 0, scale: 0 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{
@@ -252,7 +252,7 @@ export function GameResultModal({
           {/* Auth Section for non-logged users */}
           {!session && onSaveRecord && (
             <form onSubmit={handleSubmit}>
-              <DialogDescription className="mb-4">{tGame('actions.saveScorePrompt')}</DialogDescription>
+              <DialogDescription className="mb-4 text-center">{tGame('actions.saveScorePrompt')}</DialogDescription>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="username" className="text-right">

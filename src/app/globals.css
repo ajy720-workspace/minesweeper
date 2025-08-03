@@ -48,6 +48,7 @@
   --cell-hover: oklch(0.88 0 0); /* gray-200 */
   --cell-active: oklch(0.94 0 0); /* gray-100 */
   --cell-border: oklch(0.76 0 0); /* gray-400 */
+  --cell-exploded: oklch(0.6 0.2 15); /* red explosion */
   --game-text-primary: oklch(0.27 0 0); /* gray-800 */
   --game-text-secondary: oklch(0.41 0 0); /* gray-700 */
   --game-text-muted: oklch(0.54 0 0); /* gray-600 */
@@ -161,6 +162,7 @@ body {
   --cell-hover: oklch(0.88 0 0); /* gray-200 */
   --cell-active: oklch(0.94 0 0); /* gray-100 */
   --cell-border: oklch(0.76 0 0); /* gray-400 */
+  --cell-exploded: oklch(0.6 0.2 15); /* red explosion */
   --game-text-primary: oklch(0.27 0 0); /* gray-800 */
   --game-text-secondary: oklch(0.41 0 0); /* gray-700 */
   --game-text-muted: oklch(0.54 0 0); /* gray-600 */
@@ -185,6 +187,7 @@ body {
   --cell-hover: oklch(0.45 0 0); /* hover gray */
   --cell-active: oklch(0.55 0 0); /* active gray */
   --cell-border: oklch(0.3 0 0); /* border gray */
+  --cell-exploded: oklch(0.5 0.25 15); /* bright red explosion */
   --game-text-primary: oklch(0.85 0 0); /* light gray */
   --game-text-secondary: oklch(0.75 0 0); /* medium light gray */
   --game-text-muted: oklch(0.65 0 0); /* muted light gray */
@@ -209,6 +212,7 @@ body {
   --cell-hover: oklch(0.88 0.02 200); /* hover blue */
   --cell-active: oklch(0.95 0.01 200); /* active blue */
   --cell-border: oklch(0.65 0.02 200); /* border blue */
+  --cell-exploded: oklch(0.65 0.22 25); /* orange-red explosion */
   --game-text-primary: oklch(0.25 0.02 200); /* dark blue */
   --game-text-secondary: oklch(0.35 0.02 200); /* medium blue */
   --game-text-muted: oklch(0.5 0.02 200); /* muted blue */
@@ -232,6 +236,7 @@ body {
   --cell-hover: oklch(0.4 0.02 200); /* hover blue */
   --cell-active: oklch(0.5 0.02 200); /* active blue */
   --cell-border: oklch(0.25 0.02 200); /* border blue */
+  --cell-exploded: oklch(0.6 0.25 20); /* bright orange explosion */
   --game-text-primary: oklch(0.85 0.01 200); /* light blue */
   --game-text-secondary: oklch(0.75 0.01 200); /* medium light blue */
   --game-text-muted: oklch(0.65 0.01 200); /* muted light blue */
@@ -256,6 +261,7 @@ body {
   --cell-hover: oklch(0.3 0.1 280); /* hover purple */
   --cell-active: oklch(0.4 0.12 280); /* active purple */
   --cell-border: oklch(0.5 0.15 280); /* bright border */
+  --cell-exploded: oklch(0.7 0.3 340); /* bright pink explosion */
   --game-text-primary: oklch(0.9 0.1 280); /* bright purple text */
   --game-text-secondary: oklch(0.8 0.08 280); /* medium bright purple */
   --game-text-muted: oklch(0.7 0.06 280); /* muted bright purple */
@@ -279,6 +285,7 @@ body {
   --cell-hover: oklch(0.25 0.15 280); /* hover purple */
   --cell-active: oklch(0.35 0.18 280); /* active purple */
   --cell-border: oklch(0.6 0.2 280); /* bright border */
+  --cell-exploded: oklch(0.8 0.35 350); /* electric pink explosion */
   --game-text-primary: oklch(0.95 0.15 280); /* very bright purple text */
   --game-text-secondary: oklch(0.85 0.12 280); /* bright purple */
   --game-text-muted: oklch(0.75 0.1 280); /* muted bright purple */
