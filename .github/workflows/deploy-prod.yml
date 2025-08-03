@@ -2,8 +2,8 @@ name: Deploy to Production
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - 'v*.*.*'  # Semantic versioning tags (v1.0.0, v1.2.3, etc.)
   workflow_dispatch:
 
 env:
@@ -50,8 +50,8 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
-            type=sha,prefix=prod-
-            type=raw,value=prod-latest
+            type=ref,event=tag
+            type=raw,value=latest
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -91,9 +91,10 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: |
-          # Extract the first tag (prod-latest) from the multi-line tags output
+          # Extract the first tag (version tag) from the multi-line tags output
           IMAGE_TAG=$(echo "${{ needs.build-and-push.outputs.image-tag }}" | head -n1)
           echo "Using image tag: $IMAGE_TAG"
+          echo "Deploying version: ${{ github.ref_name }}"
 
           # Stop existing containers
           docker compose -f ${{ github.workspace }}/docker-compose.prod.yml down || true
@@ -109,6 +110,7 @@ jobs:
       - name: Notify deployment success
         run: |
           echo "🎉 Production deployment successful!"
+          echo "Version: ${{ github.ref_name }}"
           echo "URL: https://mine.ajy720.me"
           echo "Commit: ${{ github.sha }}"
           echo "Docker Image: ${{ needs.build-and-push.outputs.image-tag }}"

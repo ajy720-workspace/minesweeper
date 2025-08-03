@@ -2,6 +2,43 @@
 
 이 문서는 완료된 개발 작업들의 기록입니다. 날짜별로 구성되어 있으며, 프로젝트의 진행 상황을 추적할 수 있습니다.
 
+## [2024-08-03] Bug Fixes & Quality Improvements
+
+### 🐛 Critical Bug Fixes
+
+- ✅ **게임 데이터 중복 저장 버그 해결**
+  - 게임 완료 후 페이지 리로드/핫 리로드 시 스코어 중복 저장 문제 수정
+  - `scoreSaved` 상태로 중복 저장 방지 메커니즘 구현
+  - 새 게임 시작 시에만 저장 플래그 초기화하여 게임별 독립성 보장
+- ✅ **클리어 타임 일관성 버그 해결**
+  - 결과 모달 표시 시간과 저장되는 시간 불일치 문제 수정
+  - `finalClearTimeMs` 상태로 게임 종료 순간의 정확한 시간 캡처
+  - `captureGameEndTime()` 함수로 게임 끝나는 순간의 시간 불변성 보장
+  - 경쟁 게임의 공정성을 위한 타이밍 정확성 확보
+
+### 🎨 Theme System Implementation
+
+- ✅ **포괄적인 테마 시스템 구현**
+  - 다크/라이트/시스템 모드 지원 (`prefers-color-scheme` 자동 감지)
+  - 3가지 컬러 테마: Classic (회색), Modern (파란 강조), Neon (보라 하이라이트)
+  - React Context API 기반 중앙 테마 상태 관리
+  - localStorage로 사용자 설정 영속화
+- ✅ **테마 UI 컴포넌트 구현**
+  - 네비게이션 바 테마 토글 버튼 (☀️/🌙/💻 아이콘)
+  - 게임 설정 패널 내 컬러 테마 선택 드롭다운
+  - 모든 기존 컴포넌트와 완벽 호환 (무손실 통합)
+- ✅ **CSS 변수 기반 디자인 시스템**
+  - 동적 테마 전환을 위한 CSS Custom Properties 활용
+  - 지뢰 숫자별 색상, 게임 요소 스타일링 테마 대응
+  - 모든 테마-색상 조합에 대한 완전한 스타일 정의
+
+### 🔧 Docker & Deployment Fixes
+
+- ✅ **Docker Compose 이미지 태그 해결 문제 수정**
+  - GitHub Actions에서 다중 태그 출력 처리 개선
+  - `head -n1`로 첫 번째 태그만 추출하여 Docker Compose 호환성 확보
+  - 테스트/프로덕션 환경 모두에 동일한 수정 적용
+
 ## [2024-08-02] Audio System & Game Settings
 
 ### 🔊 Audio Features
