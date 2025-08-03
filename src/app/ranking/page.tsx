@@ -1,10 +1,7 @@
 // src/app/ranking/page.tsx
-import { Suspense } from 'react';
 import { getSession } from '@/lib/session';
-import { getRanking } from '@/app/ranking/actions';
-import DifficultyFilter from '@/components/ranking/DifficultyFilter';
-import RankingTable from '@/components/ranking/RankingTable';
-import UserStats from '@/components/ranking/UserStats';
+import { getRanking, getUserRankingStats } from '@/app/ranking/actions';
+import { RankingPageContent } from '@/components/ranking/RankingPageContent';
 import { Difficulty } from '@/types';
 
 interface RankingPageProps {
@@ -18,22 +15,9 @@ export default async function RankingPage({ searchParams }: RankingPageProps) {
   const difficulty = (await searchParams).difficulty || 'beginner';
 
   const { data: rankingData } = await getRanking(difficulty);
+  const { data: userStats } = session ? await getUserRankingStats(session.id, difficulty) : { data: null };
 
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-4">Ranking</h1>
-
-      <DifficultyFilter />
-
-      {session && (
-        <Suspense fallback={<p>Loading your stats...</p>}>
-          <UserStats userId={session.id} difficulty={difficulty} />
-        </Suspense>
-      )}
-
-      <Suspense fallback={<p>Loading ranking...</p>}>
-        <RankingTable data={rankingData} />
-      </Suspense>
-    </div>
+    <RankingPageContent session={session} difficulty={difficulty} rankingData={rankingData} userStats={userStats} />
   );
 }

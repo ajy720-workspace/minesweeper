@@ -156,5 +156,44 @@
   },
   "error": {
     "general": "❌ 점수 저장에 실패했습니다. 다시 시도해주세요."
+  },
+  "profile": {
+    "title": "내 프로필",
+    "welcomeBack": "환영합니다, {username}님!",
+    "statistics": "통계",
+    "gameHistory": "게임 기록",
+    "loading": {
+      "statistics": "통계를 불러오는 중...",
+      "gameHistory": "게임 기록을 불러오는 중..."
+    },
+    "stats": {
+      "totalGames": "총 게임 수",
+      "wins": "승리",
+      "winRate": "승률",
+      "bestTime": "최고 기록",
+      "averageTime": "평균 시간",
+      "totalScore": "총 점수",
+      "bestScore": "최고 점수",
+      "averageScore": "평균 점수",
+      "ranking": "순위"
+    },
+    "noData": "아직 플레이한 게임이 없습니다",
+    "difficulty": "난이도"
+  },
+  "ranking": {
+    "title": "랭킹",
+    "yourStats": "내 통계",
+    "loading": {
+      "stats": "통계를 불러오는 중...",
+      "ranking": "랭킹을 불러오는 중..."
+    },
+    "table": {
+      "rank": "순위",
+      "player": "플레이어",
+      "time": "시간",
+      "score": "점수",
+      "date": "날짜"
+    },
+    "noData": "랭킹 데이터가 없습니다"
   }
 }

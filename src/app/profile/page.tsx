@@ -1,11 +1,9 @@
 // src/app/profile/page.tsx
 import { redirect } from 'next/navigation';
-import { Suspense } from 'react';
 import { getSession } from '@/lib/session';
-import { getUserProfile } from './actions';
-import ProfileStats from '@/components/profile/ProfileStats';
-import GameHistoryTable from '@/components/profile/GameHistoryTable';
-import DifficultyFilter from '@/components/ranking/DifficultyFilter';
+import { getUserProfile, getUserOverallStats } from './actions';
+import { getUserRankingStats } from '@/app/ranking/actions';
+import { ProfilePageContent } from '@/components/profile/ProfilePageContent';
 import { Difficulty } from '@/types';
 
 interface ProfilePageProps {
@@ -22,25 +20,24 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
   }
 
   const difficulty = (await searchParams).difficulty || 'beginner';
-  const { data: profileData } = await getUserProfile(session.id, difficulty);
+
+  const [profileResult, rankingResult, overallResult] = await Promise.all([
+    getUserProfile(session.id, difficulty),
+    getUserRankingStats(session.id, difficulty),
+    getUserOverallStats(session.id),
+  ]);
+
+  const { data: profileData } = profileResult;
+  const { data: rankingStats } = rankingResult;
+  const { data: overallStats } = overallResult;
 
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6">My Profile</h1>
-
-      <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-4">Welcome back, {session.username}!</h2>
-      </div>
-
-      <DifficultyFilter />
-
-      <Suspense fallback={<p>Loading your statistics...</p>}>
-        <ProfileStats userId={session.id} difficulty={difficulty} />
-      </Suspense>
-
-      <Suspense fallback={<p>Loading your game history...</p>}>
-        <GameHistoryTable data={profileData?.gameHistory || []} difficulty={difficulty} />
-      </Suspense>
-    </div>
+    <ProfilePageContent
+      session={session}
+      difficulty={difficulty}
+      profileData={profileData}
+      rankingStats={rankingStats}
+      overallStats={overallStats}
+    />
   );
 }

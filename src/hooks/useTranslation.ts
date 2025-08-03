@@ -67,3 +67,11 @@ export function useErrorTranslation() {
 export function useNavigationTranslation() {
   return useTranslations('navigation');
 }
+
+export function useProfileTranslation() {
+  return useTranslations('profile');
+}
+
+export function useRankingTranslation() {
+  return useTranslations('ranking');
+}

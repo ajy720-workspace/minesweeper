@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useNavigationTranslation } from '@/hooks/useTranslation';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { LanguageSelector } from '@/components/ui/LanguageSelector';
 import LogoutButton from '@/components/auth/LogoutButton';
 import Logo from '@/components/ui/logo';
 
@@ -41,6 +42,7 @@ export function NavContent({ session }: NavContentProps) {
             {tNav('profileShort')}
           </Link>
         </div>
+        <LanguageSelector variant="toggle" />
         <ThemeToggle />
         {session ? (
           <div className="flex items-center gap-2">

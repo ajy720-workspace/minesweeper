@@ -156,5 +156,44 @@
   },
   "error": {
     "general": "❌ Failed to save score. Please try again."
+  },
+  "profile": {
+    "title": "My Profile",
+    "welcomeBack": "Welcome back, {username}!",
+    "statistics": "Statistics",
+    "gameHistory": "Game History",
+    "loading": {
+      "statistics": "Loading your statistics...",
+      "gameHistory": "Loading your game history..."
+    },
+    "stats": {
+      "totalGames": "Total Games",
+      "wins": "Wins",
+      "winRate": "Win Rate",
+      "bestTime": "Best Time",
+      "averageTime": "Average Time",
+      "totalScore": "Total Score",
+      "bestScore": "Best Score",
+      "averageScore": "Average Score",
+      "ranking": "Ranking"
+    },
+    "noData": "No games played yet",
+    "difficulty": "Difficulty"
+  },
+  "ranking": {
+    "title": "Ranking",
+    "yourStats": "Your Stats",
+    "loading": {
+      "stats": "Loading your stats...",
+      "ranking": "Loading ranking..."
+    },
+    "table": {
+      "rank": "Rank",
+      "player": "Player",
+      "time": "Time",
+      "score": "Score",
+      "date": "Date"
+    },
+    "noData": "No ranking data available"
   }
 }
