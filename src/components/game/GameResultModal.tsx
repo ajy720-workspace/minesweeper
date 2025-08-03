@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { useGameTranslation, useCommonTranslation, useErrorTranslation } from '@/hooks/useTranslation';
 
 type GameState = 'won' | 'lost';
 
@@ -87,6 +88,10 @@ export function GameResultModal({
   onPlayAgain,
   saveStatus = 'idle',
 }: GameResultModalProps) {
+  const tGame = useGameTranslation();
+  const tCommon = useCommonTranslation();
+  const tError = useErrorTranslation();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!onSaveRecord) return;
@@ -122,7 +127,7 @@ export function GameResultModal({
   };
 
   const getDifficultyDisplay = (difficulty: string) => {
-    return difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+    return tGame(`difficulty.${difficulty}`);
   };
 
   return (
@@ -164,7 +169,7 @@ export function GameResultModal({
                       repeatDelay: 3,
                     }}
                   >
-                    🎉 Congratulations!
+                    {tGame('result.win')}
                   </motion.span>
                 ) : (
                   <motion.span
@@ -176,7 +181,7 @@ export function GameResultModal({
                       repeat: 2,
                     }}
                   >
-                    💥 Game Over
+                    {tGame('result.lose')}
                   </motion.span>
                 )}
               </DialogTitle>
@@ -200,7 +205,7 @@ export function GameResultModal({
                     <div className="text-2xl font-bold text-blue-600">
                       {formatTime(gameResult.time, gameResult.timeMs)}
                     </div>
-                    <div className="text-sm text-muted-foreground">Time</div>
+                    <div className="text-sm text-muted-foreground">{tCommon('time')}</div>
                   </motion.div>
                   <motion.div
                     initial={{ scale: 0 }}
@@ -212,7 +217,7 @@ export function GameResultModal({
                     }}
                   >
                     <div className="text-2xl font-bold text-purple-600">{gameResult.score.toLocaleString()}</div>
-                    <div className="text-sm text-muted-foreground">Score</div>
+                    <div className="text-sm text-muted-foreground">{tCommon('score')}</div>
                   </motion.div>
                 </div>
                 <motion.div
@@ -222,7 +227,7 @@ export function GameResultModal({
                   transition={{ delay: 1.0 }}
                 >
                   <div className="text-lg font-semibold text-foreground">
-                    {getDifficultyDisplay(gameResult.difficulty)} Mode
+                    {getDifficultyDisplay(gameResult.difficulty)} {tGame('ui.mode')}
                   </div>
                   {gameResult.status === 'won' && (
                     <motion.div
@@ -235,7 +240,7 @@ export function GameResultModal({
                         stiffness: 400,
                       }}
                     >
-                      🏆 Victory achieved!
+                      {tGame('result.victoryAchieved')}
                     </motion.div>
                   )}
                 </motion.div>
@@ -246,19 +251,17 @@ export function GameResultModal({
           {/* Auth Section for non-logged users */}
           {!session && onSaveRecord && (
             <form onSubmit={handleSubmit}>
-              <DialogDescription className="mb-4">
-                Save your score by logging in or creating a new account:
-              </DialogDescription>
+              <DialogDescription className="mb-4">{tGame('actions.saveScorePrompt')}</DialogDescription>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="username" className="text-right">
-                    Username
+                    {tCommon('username')}
                   </Label>
                   <Input id="username" name="username" className="col-span-3" required />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="password" className="text-right">
-                    Password
+                    {tCommon('password')}
                   </Label>
                   <Input id="password" name="password" type="password" className="col-span-3" required />
                 </div>
@@ -272,7 +275,7 @@ export function GameResultModal({
                     exit={{ opacity: 0, y: 10 }}
                     className="text-center"
                   >
-                    <LoadingSpinner size="sm" message="Saving your score..." />
+                    <LoadingSpinner size="sm" message={tGame('loading.savingScore')} />
                   </motion.div>
                 )}
                 {saveStatus === 'error' && (
@@ -287,7 +290,7 @@ export function GameResultModal({
                     transition={{ scale: { duration: 0.3 } }}
                     className="text-center text-red-600 font-medium"
                   >
-                    ❌ Failed to save score. Please try again.
+                    {tError('general')}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -300,12 +303,12 @@ export function GameResultModal({
               >
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
                   <Button type="button" variant="outline" onClick={handlePlayAgain} className="w-full">
-                    Play Again
+                    {tCommon('playAgain')}
                   </Button>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
                   <Button type="submit" disabled={saveStatus === 'saving'} className="w-full">
-                    {saveStatus === 'saving' ? 'Saving...' : 'Save Score'}
+                    {saveStatus === 'saving' ? tCommon('saving') : tCommon('saveScore')}
                   </Button>
                 </motion.div>
               </motion.div>
@@ -328,7 +331,7 @@ export function GameResultModal({
                     exit={{ opacity: 0 }}
                     className="text-center"
                   >
-                    <LoadingSpinner size="sm" message="Saving your score..." />
+                    <LoadingSpinner size="sm" message={tGame('loading.savingScore')} />
                   </motion.div>
                 )}
                 {saveStatus === 'saved' && (
@@ -338,7 +341,11 @@ export function GameResultModal({
                     exit={{ opacity: 0 }}
                     className="text-center text-green-600 font-medium"
                   >
-                    ✅ Score saved for <span className="font-semibold">{session.username}</span>
+                    ✅{' '}
+                    {tGame.rich('actions.scoreSavedFor', {
+                      username: session.username,
+                      strong: (chunks) => <span className="font-semibold">{chunks}</span>,
+                    })}
                   </motion.div>
                 )}
                 {saveStatus === 'error' && (
@@ -348,7 +355,7 @@ export function GameResultModal({
                     exit={{ opacity: 0 }}
                     className="text-center text-red-600 font-medium"
                   >
-                    ❌ Failed to save score. Please try again.
+                    {tError('general')}
                   </motion.div>
                 )}
                 {saveStatus === 'idle' && (
@@ -357,7 +364,10 @@ export function GameResultModal({
                     animate={{ opacity: 1 }}
                     className="text-center text-sm text-muted-foreground"
                   >
-                    Score automatically saved for <span className="font-semibold">{session.username}</span>
+                    {tGame.rich('actions.autoSaved', {
+                      username: session.username,
+                      strong: (chunks) => <span className="font-semibold">{chunks}</span>,
+                    })}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -369,12 +379,12 @@ export function GameResultModal({
               >
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button onClick={handlePlayAgain} className="px-8">
-                    Play Again
+                    {tCommon('playAgain')}
                   </Button>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button variant="outline" onClick={onClose}>
-                    Close
+                    {tCommon('close')}
                   </Button>
                 </motion.div>
               </motion.div>

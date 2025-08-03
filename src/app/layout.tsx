@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import './globals.css';
 import { getSession } from '@/lib/session';
-import LogoutButton from '@/components/auth/LogoutButton';
-import Logo from '@/components/ui/logo';
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
-import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { LocaleProvider } from '@/contexts/LocaleContext';
+import { HtmlLangUpdater } from '@/components/HtmlLangUpdater';
+import { NavContent } from '@/components/NavContent';
+import { IntlProvider } from '@/components/providers/IntlProvider';
 
 export const metadata: Metadata = {
   title: 'Minesweeper',
@@ -26,50 +26,17 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        <ThemeProvider>
-          <nav className="bg-primary text-primary-foreground p-2">
-            <div className="container mx-auto flex justify-between items-center">
-              <Link href="/" className="hover:opacity-80 transition-opacity">
-                <Logo size="md" showText={true} />
-              </Link>
-              <div className="flex items-center gap-2 sm:gap-4">
-                <div className="hidden sm:flex gap-4 items-center">
-                  <Link href="/ranking" className="hover:text-muted-foreground transition-colors">
-                    Ranking
-                  </Link>
-                  <Link href="/profile" className="hover:text-muted-foreground transition-colors">
-                    My Profile
-                  </Link>
-                </div>
-                <div className="sm:hidden flex gap-2">
-                  <Link
-                    href="/ranking"
-                    className="text-xs px-2 py-1 bg-secondary rounded hover:bg-secondary/80 transition-colors"
-                  >
-                    Rank
-                  </Link>
-                  <Link
-                    href="/profile"
-                    className="text-xs px-2 py-1 bg-secondary rounded hover:bg-secondary/80 transition-colors"
-                  >
-                    Profile
-                  </Link>
-                </div>
-                <ThemeToggle />
-                {session ? (
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs sm:text-sm hidden sm:inline">Welcome, {session.username}!</span>
-                    <span className="text-xs sm:hidden">{session.username}</span>
-                    <LogoutButton />
-                  </div>
-                ) : (
-                  <span className="text-xs sm:text-sm text-muted-foreground hidden sm:inline">Not logged in</span>
-                )}
-              </div>
-            </div>
-          </nav>
-          <main className="container mx-auto p-2 sm:p-4">{children}</main>
-        </ThemeProvider>
+        <LocaleProvider>
+          <HtmlLangUpdater />
+          <IntlProvider>
+            <ThemeProvider>
+              <nav className="bg-primary text-primary-foreground p-2">
+                <NavContent session={session} />
+              </nav>
+              <main className="container mx-auto p-2 sm:p-4">{children}</main>
+            </ThemeProvider>
+          </IntlProvider>
+        </LocaleProvider>
       </body>
     </html>
   );
