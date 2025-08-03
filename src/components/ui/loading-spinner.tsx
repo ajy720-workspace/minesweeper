@@ -14,21 +14,18 @@ export function LoadingSpinner({ size = 'md', className, message }: LoadingSpinn
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-8 h-8',
-    lg: 'w-12 h-12'
+    lg: 'w-12 h-12',
   };
 
   return (
     <div className={cn('flex flex-col items-center justify-center gap-2', className)}>
       <motion.div
-        className={cn(
-          'border-2 border-muted border-t-primary rounded-full',
-          sizeClasses[size]
-        )}
+        className={cn('border-2 border-muted border-t-primary rounded-full', sizeClasses[size])}
         animate={{ rotate: 360 }}
         transition={{
           duration: 1,
           repeat: Infinity,
-          ease: 'linear'
+          ease: 'linear',
         }}
       />
       {message && (
@@ -51,12 +48,12 @@ export function LoadingPulse({ className }: { className?: string }) {
     <motion.div
       className={cn('bg-muted rounded', className)}
       animate={{
-        opacity: [0.5, 1, 0.5]
+        opacity: [0.5, 1, 0.5],
       }}
       transition={{
         duration: 1.5,
         repeat: Infinity,
-        ease: 'easeInOut'
+        ease: 'easeInOut',
       }}
     />
   );
@@ -72,12 +69,12 @@ export function LoadingDots({ className }: { className?: string }) {
           className="w-2 h-2 bg-primary rounded-full"
           animate={{
             scale: [1, 1.5, 1],
-            opacity: [0.5, 1, 0.5]
+            opacity: [0.5, 1, 0.5],
           }}
           transition={{
             duration: 1,
             repeat: Infinity,
-            delay: index * 0.2
+            delay: index * 0.2,
           }}
         />
       ))}

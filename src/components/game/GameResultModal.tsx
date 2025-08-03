@@ -30,8 +30,10 @@ interface GameResultModalProps {
 
 // Confetti component for win celebration
 const Confetti = () => {
-  const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; rotation: number; color: string }>>([]);
-  
+  const [particles, setParticles] = useState<
+    Array<{ id: number; x: number; y: number; rotation: number; color: string }>
+  >([]);
+
   useEffect(() => {
     const colors = ['🎉', '🎊', '✨', '🌟', '💫'];
     const newParticles = Array.from({ length: 50 }, (_, i) => ({
@@ -39,7 +41,7 @@ const Confetti = () => {
       x: Math.random() * 400,
       y: Math.random() * 300,
       rotation: Math.random() * 360,
-      color: colors[Math.floor(Math.random() * colors.length)]
+      color: colors[Math.floor(Math.random() * colors.length)],
     }));
     setParticles(newParticles);
   }, []);
@@ -55,18 +57,18 @@ const Confetti = () => {
             y: particle.y,
             rotate: particle.rotation,
             opacity: 1,
-            scale: 0
+            scale: 0,
           }}
           animate={{
             y: particle.y + 500,
             rotate: particle.rotation + 720,
             opacity: 0,
-            scale: [0, 1, 1, 0]
+            scale: [0, 1, 1, 0],
           }}
           transition={{
             duration: 3,
-            ease: "easeOut",
-            delay: Math.random() * 0.5
+            ease: 'easeOut',
+            delay: Math.random() * 0.5,
           }}
         >
           {particle.color}
@@ -127,55 +129,51 @@ export function GameResultModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px] overflow-hidden">
         {/* Confetti for wins */}
-        <AnimatePresence>
-          {gameResult.status === 'won' && (
-            <Confetti />
-          )}
-        </AnimatePresence>
-        
+        <AnimatePresence>{gameResult.status === 'won' && <Confetti />}</AnimatePresence>
+
         <motion.div
           initial={{ scale: 0.8, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
-          transition={{ 
-            type: "spring", 
-            stiffness: 300, 
+          transition={{
+            type: 'spring',
+            stiffness: 300,
             damping: 30,
-            delay: gameResult.status === 'won' ? 0.2 : 0
+            delay: gameResult.status === 'won' ? 0.2 : 0,
           }}
         >
           <DialogHeader>
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ 
-                type: "spring", 
+              transition={{
+                type: 'spring',
                 stiffness: 400,
-                delay: 0.3
+                delay: 0.3,
               }}
             >
               <DialogTitle className="text-2xl text-center">
                 {gameResult.status === 'won' ? (
                   <motion.span
-                    animate={{ 
+                    animate={{
                       scale: [1, 1.1, 1],
-                      rotate: [0, -5, 5, 0]
+                      rotate: [0, -5, 5, 0],
                     }}
-                    transition={{ 
+                    transition={{
                       duration: 2,
                       repeat: Infinity,
-                      repeatDelay: 3
+                      repeatDelay: 3,
                     }}
                   >
                     🎉 Congratulations!
                   </motion.span>
                 ) : (
                   <motion.span
-                    animate={{ 
+                    animate={{
                       scale: [1, 0.95, 1],
                     }}
-                    transition={{ 
+                    transition={{
                       duration: 1,
-                      repeat: 2
+                      repeat: 2,
                     }}
                   >
                     💥 Game Over
@@ -186,40 +184,38 @@ export function GameResultModal({
           </DialogHeader>
 
           {/* Game Statistics */}
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-          >
+          <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }}>
             <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-2">
               <CardContent className="pt-6">
                 <div className="grid grid-cols-2 gap-4 text-center">
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    transition={{ 
-                      type: "spring", 
+                    transition={{
+                      type: 'spring',
                       stiffness: 300,
-                      delay: 0.6 
+                      delay: 0.6,
                     }}
                   >
-                    <div className="text-2xl font-bold text-blue-600">{formatTime(gameResult.time, gameResult.timeMs)}</div>
+                    <div className="text-2xl font-bold text-blue-600">
+                      {formatTime(gameResult.time, gameResult.timeMs)}
+                    </div>
                     <div className="text-sm text-muted-foreground">Time</div>
                   </motion.div>
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    transition={{ 
-                      type: "spring", 
+                    transition={{
+                      type: 'spring',
                       stiffness: 300,
-                      delay: 0.8 
+                      delay: 0.8,
                     }}
                   >
                     <div className="text-2xl font-bold text-purple-600">{gameResult.score.toLocaleString()}</div>
                     <div className="text-sm text-muted-foreground">Score</div>
                   </motion.div>
                 </div>
-                <motion.div 
+                <motion.div
                   className="mt-4 text-center"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -229,14 +225,14 @@ export function GameResultModal({
                     {getDifficultyDisplay(gameResult.difficulty)} Mode
                   </div>
                   {gameResult.status === 'won' && (
-                    <motion.div 
+                    <motion.div
                       className="text-green-600 font-medium mt-1"
                       initial={{ opacity: 0, scale: 0 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ 
+                      transition={{
                         delay: 1.2,
-                        type: "spring",
-                        stiffness: 400
+                        type: 'spring',
+                        stiffness: 400,
                       }}
                     >
                       🏆 Victory achieved!
@@ -247,78 +243,78 @@ export function GameResultModal({
             </Card>
           </motion.div>
 
-        {/* Auth Section for non-logged users */}
-        {!session && onSaveRecord && (
-          <form onSubmit={handleSubmit}>
-            <DialogDescription className="mb-4">
-              Save your score by logging in or creating a new account:
-            </DialogDescription>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="username" className="text-right">
-                  Username
-                </Label>
-                <Input id="username" name="username" className="col-span-3" required />
+          {/* Auth Section for non-logged users */}
+          {!session && onSaveRecord && (
+            <form onSubmit={handleSubmit}>
+              <DialogDescription className="mb-4">
+                Save your score by logging in or creating a new account:
+              </DialogDescription>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="username" className="text-right">
+                    Username
+                  </Label>
+                  <Input id="username" name="username" className="col-span-3" required />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="password" className="text-right">
+                    Password
+                  </Label>
+                  <Input id="password" name="password" type="password" className="col-span-3" required />
+                </div>
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="password" className="text-right">
-                  Password
-                </Label>
-                <Input id="password" name="password" type="password" className="col-span-3" required />
-              </div>
-            </div>
-            {/* Save Status Messages */}
-            <AnimatePresence mode="wait">
-              {saveStatus === 'saving' && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="text-center"
-                >
-                  <LoadingSpinner size="sm" message="Saving your score..." />
-                </motion.div>
-              )}
-              {saveStatus === 'error' && (
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ 
-                    opacity: 1, 
-                    x: 0,
-                    scale: [1, 1.05, 1]
-                  }}
-                  exit={{ opacity: 0, x: 20 }}
-                  transition={{ scale: { duration: 0.3 } }}
-                  className="text-center text-red-600 font-medium"
-                >
-                  ❌ Failed to save score. Please try again.
-                </motion.div>
-              )}
-            </AnimatePresence>
+              {/* Save Status Messages */}
+              <AnimatePresence mode="wait">
+                {saveStatus === 'saving' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="text-center"
+                  >
+                    <LoadingSpinner size="sm" message="Saving your score..." />
+                  </motion.div>
+                )}
+                {saveStatus === 'error' && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                      scale: [1, 1.05, 1],
+                    }}
+                    exit={{ opacity: 0, x: 20 }}
+                    transition={{ scale: { duration: 0.3 } }}
+                    className="text-center text-red-600 font-medium"
+                  >
+                    ❌ Failed to save score. Please try again.
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-            <motion.div 
-              className="flex justify-between gap-3"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
-                <Button type="button" variant="outline" onClick={handlePlayAgain} className="w-full">
-                  Play Again
-                </Button>
+              <motion.div
+                className="flex justify-between gap-3"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                  <Button type="button" variant="outline" onClick={handlePlayAgain} className="w-full">
+                    Play Again
+                  </Button>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                  <Button type="submit" disabled={saveStatus === 'saving'} className="w-full">
+                    {saveStatus === 'saving' ? 'Saving...' : 'Save Score'}
+                  </Button>
+                </motion.div>
               </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
-                <Button type="submit" disabled={saveStatus === 'saving'} className="w-full">
-                  {saveStatus === 'saving' ? 'Saving...' : 'Save Score'}
-                </Button>
-              </motion.div>
-            </motion.div>
-          </form>
-        )}
+            </form>
+          )}
 
           {/* Logged in user actions */}
           {session && (
-            <motion.div 
+            <motion.div
               className="space-y-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -365,7 +361,7 @@ export function GameResultModal({
                   </motion.div>
                 )}
               </AnimatePresence>
-              <motion.div 
+              <motion.div
                 className="flex justify-center gap-3"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -383,7 +379,7 @@ export function GameResultModal({
                 </motion.div>
               </motion.div>
             </motion.div>
-        )}
+          )}
         </motion.div>
       </DialogContent>
     </Dialog>

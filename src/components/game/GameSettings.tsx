@@ -45,14 +45,10 @@ const HelpModal = () => {
       <DialogHeader>
         <DialogTitle className="text-xl">🎮 마인스위퍼 가이드</DialogTitle>
       </DialogHeader>
-      
+
       <div className="space-y-6">
         {/* Game Rules */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
           <h3 className="font-semibold text-lg mb-3 text-primary">📋 게임 규칙</h3>
           <div className="space-y-2">
             {gameRules.map((rule, index) => (
@@ -71,11 +67,7 @@ const HelpModal = () => {
         </motion.section>
 
         {/* Keyboard Shortcuts */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
           <h3 className="font-semibold text-lg mb-3 text-primary">⌨️ 키보드 단축키</h3>
           <div className="grid gap-2">
             {keyboardShortcuts.map((shortcut, index) => (
@@ -86,9 +78,7 @@ const HelpModal = () => {
                 transition={{ delay: 0.4 + index * 0.1 }}
                 className="flex justify-between items-center p-2 rounded bg-muted/30"
               >
-                <code className="px-2 py-1 bg-muted rounded text-sm font-mono">
-                  {shortcut.key}
-                </code>
+                <code className="px-2 py-1 bg-muted rounded text-sm font-mono">{shortcut.key}</code>
                 <span className="text-sm text-muted-foreground">{shortcut.description}</span>
               </motion.div>
             ))}
@@ -96,11 +86,7 @@ const HelpModal = () => {
         </motion.section>
 
         {/* Scoring System */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-        >
+        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
           <h3 className="font-semibold text-lg mb-3 text-primary">🏆 점수 시스템</h3>
           <div className="grid gap-2">
             {scoringSystem.map((item, index) => (
@@ -189,13 +175,10 @@ const GameSettings: React.FC<GameSettingsProps> = ({ onRestart }) => {
         </Tooltip>
 
         {/* Theme Toggle */}
-        <Tooltip content={`현재 테마: ${theme === 'light' ? '라이트' : theme === 'dark' ? '다크' : '시스템'} (클릭하여 변경)`}>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={cycleTheme}
-            className="h-9 w-9 p-0"
-          >
+        <Tooltip
+          content={`현재 테마: ${theme === 'light' ? '라이트' : theme === 'dark' ? '다크' : '시스템'} (클릭하여 변경)`}
+        >
+          <Button size="sm" variant="outline" onClick={cycleTheme} className="h-9 w-9 p-0">
             {getThemeIcon()}
           </Button>
         </Tooltip>

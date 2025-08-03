@@ -42,7 +42,7 @@ const Cell: React.FC<CellProps> = ({ cell, isFocused, onMouseDown }) => {
           <motion.span
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
-            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
           >
             🚩
           </motion.span>
@@ -50,11 +50,7 @@ const Cell: React.FC<CellProps> = ({ cell, isFocused, onMouseDown }) => {
       }
       if (cell.isQuestioned) {
         return (
-          <motion.span
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 400 }}
-          >
+          <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 400 }}>
             ❓
           </motion.span>
         );
@@ -66,13 +62,13 @@ const Cell: React.FC<CellProps> = ({ cell, isFocused, onMouseDown }) => {
         return (
           <motion.span
             initial={{ scale: 1 }}
-            animate={{ 
+            animate={{
               scale: [1, 1.3, 1],
-              rotate: [0, -10, 10, 0]
+              rotate: [0, -10, 10, 0],
             }}
-            transition={{ 
+            transition={{
               duration: 0.5,
-              ease: "easeOut"
+              ease: 'easeOut',
             }}
           >
             💥
@@ -80,25 +76,21 @@ const Cell: React.FC<CellProps> = ({ cell, isFocused, onMouseDown }) => {
         );
       }
       return (
-        <motion.span
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: "spring", stiffness: 300 }}
-        >
+        <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 300 }}>
           💣
         </motion.span>
       );
     }
     if (cell.adjacentMines > 0) {
       return (
-        <motion.span 
+        <motion.span
           className={getNumberColor(cell.adjacentMines)}
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ 
-            type: "spring", 
+          transition={{
+            type: 'spring',
             stiffness: 400,
-            delay: 0.1 
+            delay: 0.1,
           }}
         >
           {cell.adjacentMines}
@@ -125,27 +117,26 @@ const Cell: React.FC<CellProps> = ({ cell, isFocused, onMouseDown }) => {
   // Animation variants for cell reveal
   const cellVariants = {
     hidden: { scale: 1, rotateY: 0 },
-    revealed: { 
+    revealed: {
       scale: [1, 1.05, 1],
+      rotate: [0, -5, 5, -3, 0],
       transition: {
         duration: 0.3,
-        ease: "easeOut"
-      }
+      },
     },
     exploded: {
       scale: [1, 1.2, 0.9, 1.1, 1],
       rotate: [0, -5, 5, -3, 0],
       transition: {
         duration: 0.6,
-        ease: "easeInOut"
-      }
-    }
+      },
+    },
   };
 
   const getAnimationState = () => {
-    if (cell.isExploded) return "exploded";
-    if (cell.isRevealed) return "revealed";
-    return "hidden";
+    if (cell.isExploded) return 'exploded';
+    if (cell.isRevealed) return 'revealed';
+    return 'hidden';
   };
 
   return (
