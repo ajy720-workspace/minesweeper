@@ -127,7 +127,6 @@ const Cell: React.FC<CellProps> = ({ cell, isFocused, onMouseDown }) => {
     hidden: { scale: 1, rotateY: 0 },
     revealed: { 
       scale: [1, 1.05, 1],
-      rotateY: cell.isRevealed ? [0, 180, 180] : 0,
       transition: {
         duration: 0.3,
         ease: "easeOut"

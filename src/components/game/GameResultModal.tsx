@@ -125,7 +125,7 @@ export function GameResultModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px] relative overflow-hidden">
+      <DialogContent className="sm:max-w-[500px] overflow-hidden">
         {/* Confetti for wins */}
         <AnimatePresence>
           {gameResult.status === 'won' && (
@@ -279,21 +279,6 @@ export function GameResultModal({
                   <LoadingSpinner size="sm" message="Saving your score..." />
                 </motion.div>
               )}
-              {saveStatus === 'saved' && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  className="text-center text-green-600 font-medium mb-4"
-                >
-                  <motion.span
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    ✅ Score saved successfully!
-                  </motion.span>
-                </motion.div>
-              )}
               {saveStatus === 'error' && (
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
@@ -322,19 +307,11 @@ export function GameResultModal({
                   Play Again
                 </Button>
               </motion.div>
-              {saveStatus === 'saved' ? (
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
-                  <Button type="button" onClick={handlePlayAgain} className="w-full">
-                    New Game
-                  </Button>
-                </motion.div>
-              ) : (
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
-                  <Button type="submit" disabled={saveStatus === 'saving'} className="w-full">
-                    {saveStatus === 'saving' ? 'Saving...' : 'Save Score'}
-                  </Button>
-                </motion.div>
-              )}
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                <Button type="submit" disabled={saveStatus === 'saving'} className="w-full">
+                  {saveStatus === 'saving' ? 'Saving...' : 'Save Score'}
+                </Button>
+              </motion.div>
             </motion.div>
           </form>
         )}

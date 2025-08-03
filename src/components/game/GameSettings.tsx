@@ -41,7 +41,7 @@ const HelpModal = () => {
   ];
 
   return (
-    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto pr-3">
       <DialogHeader>
         <DialogTitle className="text-xl">🎮 마인스위퍼 가이드</DialogTitle>
       </DialogHeader>
