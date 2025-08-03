@@ -157,7 +157,7 @@ export function GameResultModal({
                 delay: 0.3,
               }}
             >
-              <DialogTitle className="text-2xl text-center">
+              <DialogTitle className="text-2xl text-center mb-4">
                 {gameResult.status === 'won' ? (
                   <motion.span
                     animate={{
@@ -190,7 +190,7 @@ export function GameResultModal({
           </DialogHeader>
 
           {/* Game Statistics */}
-          <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }}>
+          <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className='mb-4'>
             <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-2">
               <CardContent className="pt-6">
                 <div className="grid grid-cols-2 gap-4 text-center">
@@ -252,7 +252,7 @@ export function GameResultModal({
           {/* Auth Section for non-logged users */}
           {!session && onSaveRecord && (
             <form onSubmit={handleSubmit}>
-              <DialogDescription className="mb-4 text-center">{tGame('actions.saveScorePrompt')}</DialogDescription>
+              <DialogDescription className="text-center">{tGame('actions.saveScorePrompt')}</DialogDescription>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="username" className="text-right">
@@ -297,7 +297,7 @@ export function GameResultModal({
               </AnimatePresence>
 
               <motion.div
-                className="flex justify-between gap-3"
+                className="flex justify-between gap-3 mt-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}

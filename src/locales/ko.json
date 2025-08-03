@@ -207,7 +207,9 @@
       "player": "플레이어",
       "time": "시간",
       "score": "점수",
-      "date": "날짜"
+      "date": "날짜",
+      "percentile": "백분위",
+      "top": "상위"
     },
     "noData": "랭킹 데이터가 없습니다"
   }

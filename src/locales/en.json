@@ -207,7 +207,9 @@
       "player": "Player",
       "time": "Time",
       "score": "Score",
-      "date": "Date"
+      "date": "Date",
+      "percentile": "Percentile",
+      "top": "Top"
     },
     "noData": "No ranking data available"
   }
