@@ -178,7 +178,22 @@
       "ranking": "Ranking"
     },
     "noData": "No games played yet",
-    "difficulty": "Difficulty"
+    "difficulty": "Difficulty",
+    "gameHistory": {
+      "title": "Game History",
+      "noGames": "No games played for this difficulty yet.",
+      "gamesCount": "games",
+      "table": {
+        "result": "Result",
+        "time": "Time",
+        "score": "Score",
+        "date": "Date"
+      },
+      "results": {
+        "win": "Win",
+        "loss": "Loss"
+      }
+    }
   },
   "ranking": {
     "title": "Ranking",
@@ -192,7 +207,9 @@
       "player": "Player",
       "time": "Time",
       "score": "Score",
-      "date": "Date"
+      "date": "Date",
+      "percentile": "Percentile",
+      "top": "Top"
     },
     "noData": "No ranking data available"
   }

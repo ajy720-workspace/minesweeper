@@ -1,6 +1,9 @@
 // src/components/profile/GameHistoryTable.tsx
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useProfileTranslation, useGameTranslation } from '@/hooks/useTranslation';
 
 type GameRecord = {
   id: number;
@@ -17,14 +20,25 @@ interface GameHistoryTableProps {
 }
 
 export default function GameHistoryTable({ data, difficulty }: GameHistoryTableProps) {
+  const tProfile = useProfileTranslation();
+  const tGame = useGameTranslation();
+
+  // Get localized difficulty name
+  const getDifficultyName = (diff: string) => {
+    const difficultyKey = diff.toLowerCase() as 'beginner' | 'intermediate' | 'expert';
+    return tGame(`difficulty.${difficultyKey}`);
+  };
+
   if (!data || data.length === 0) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Game History - {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}</CardTitle>
+          <CardTitle>
+            {tProfile('gameHistory.title')} - {getDifficultyName(difficulty)}
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground">No games played for this difficulty yet.</p>
+          <p className="text-muted-foreground">{tProfile('gameHistory.noGames')}</p>
         </CardContent>
       </Card>
     );
@@ -34,17 +48,18 @@ export default function GameHistoryTable({ data, difficulty }: GameHistoryTableP
     <Card>
       <CardHeader>
         <CardTitle>
-          Game History - {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} ({data.length} games)
+          {tProfile('gameHistory.title')} - {getDifficultyName(difficulty)} ({data.length}{' '}
+          {tProfile('gameHistory.gamesCount')})
         </CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Result</TableHead>
-              <TableHead>Time</TableHead>
-              <TableHead>Score</TableHead>
-              <TableHead>Date</TableHead>
+              <TableHead>{tProfile('gameHistory.table.result')}</TableHead>
+              <TableHead>{tProfile('gameHistory.table.time')}</TableHead>
+              <TableHead>{tProfile('gameHistory.table.score')}</TableHead>
+              <TableHead>{tProfile('gameHistory.table.date')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -58,7 +73,7 @@ export default function GameHistoryTable({ data, difficulty }: GameHistoryTableP
                         : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
                     }`}
                   >
-                    {game.win ? 'Win' : 'Loss'}
+                    {game.win ? tProfile('gameHistory.results.win') : tProfile('gameHistory.results.loss')}
                   </span>
                 </TableCell>
                 <TableCell>

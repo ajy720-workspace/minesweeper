@@ -46,7 +46,7 @@ export default function UserStats({ difficulty, userStats: stats }: UserStatsPro
           <strong>{tRanking('table.rank')}:</strong> {stats.user_rank} / {stats.total_players}
         </p>
         <p>
-          <strong>Percentile:</strong> Top {stats.percentile?.toFixed(2)}%
+          <strong>{tRanking('table.percentile')}:</strong> {tRanking('table.top')} {stats.percentile?.toFixed(2)}%
         </p>
       </CardContent>
     </Card>
