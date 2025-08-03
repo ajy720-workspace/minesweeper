@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SubtleButtonMotion, ButtonMotion } from '@/components/ui/motion';
 import { useState, useEffect } from 'react';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { useGameTranslation, useCommonTranslation, useErrorTranslation } from '@/hooks/useTranslation';
@@ -226,12 +227,12 @@ export function GameResultModal({
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.0 }}
                 >
-                  <div className="text-lg font-semibold text-foreground">
+                  <div className="text-lg font-semibold text-neutral-900">
                     {getDifficultyDisplay(gameResult.difficulty)} {tGame('ui.mode')}
                   </div>
                   {gameResult.status === 'won' && (
                     <motion.div
-                      className="text-green-600 font-medium mt-1"
+                      className="text-green-600 font-medium mt-1 bg-red"
                       initial={{ opacity: 0, scale: 0 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{
@@ -251,7 +252,7 @@ export function GameResultModal({
           {/* Auth Section for non-logged users */}
           {!session && onSaveRecord && (
             <form onSubmit={handleSubmit}>
-              <DialogDescription className="mb-4">{tGame('actions.saveScorePrompt')}</DialogDescription>
+              <DialogDescription className="mb-4 text-center">{tGame('actions.saveScorePrompt')}</DialogDescription>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
                   <Label htmlFor="username" className="text-right">
@@ -301,16 +302,16 @@ export function GameResultModal({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                <SubtleButtonMotion className="flex-1">
                   <Button type="button" variant="outline" onClick={handlePlayAgain} className="w-full">
                     {tCommon('playAgain')}
                   </Button>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                </SubtleButtonMotion>
+                <SubtleButtonMotion className="flex-1">
                   <Button type="submit" disabled={saveStatus === 'saving'} className="w-full">
                     {saveStatus === 'saving' ? tCommon('saving') : tCommon('saveScore')}
                   </Button>
-                </motion.div>
+                </SubtleButtonMotion>
               </motion.div>
             </form>
           )}
@@ -377,16 +378,16 @@ export function GameResultModal({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.6 }}
               >
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <ButtonMotion>
                   <Button onClick={handlePlayAgain} className="px-8">
                     {tCommon('playAgain')}
                   </Button>
-                </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                </ButtonMotion>
+                <ButtonMotion>
                   <Button variant="outline" onClick={onClose}>
                     {tCommon('close')}
                   </Button>
-                </motion.div>
+                </ButtonMotion>
               </motion.div>
             </motion.div>
           )}

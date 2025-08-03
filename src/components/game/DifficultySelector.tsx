@@ -24,7 +24,7 @@ const DifficultySelector: React.FC<DifficultySelectorProps> = ({ onSelectDifficu
           key={level}
           onClick={() => onSelectDifficulty(level)}
           variant={currentDifficulty === level ? 'default' : 'secondary'}
-          className="font-semibold"
+          className="font-semibold border-2"
           aria-pressed={currentDifficulty === level}
         >
           {getDifficultyLabel(level)}
