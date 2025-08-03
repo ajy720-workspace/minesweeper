@@ -1,5 +1,8 @@
 // src/components/game/Cell.tsx
+'use client';
+
 import React from 'react';
+import { motion } from 'framer-motion';
 import { CellState } from '@/lib/minesweeper';
 
 type CellProps = {
@@ -34,15 +37,73 @@ const Cell: React.FC<CellProps> = ({ cell, isFocused, onMouseDown }) => {
 
   const renderContent = () => {
     if (!cell.isRevealed) {
-      if (cell.isFlagged) return '🚩';
-      if (cell.isQuestioned) return '❓';
+      if (cell.isFlagged) {
+        return (
+          <motion.span
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+          >
+            🚩
+          </motion.span>
+        );
+      }
+      if (cell.isQuestioned) {
+        return (
+          <motion.span
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 400 }}
+          >
+            ❓
+          </motion.span>
+        );
+      }
       return null;
     }
     if (cell.isMine) {
-      return cell.isExploded ? '💥' : '💣';
+      if (cell.isExploded) {
+        return (
+          <motion.span
+            initial={{ scale: 1 }}
+            animate={{ 
+              scale: [1, 1.3, 1],
+              rotate: [0, -10, 10, 0]
+            }}
+            transition={{ 
+              duration: 0.5,
+              ease: "easeOut"
+            }}
+          >
+            💥
+          </motion.span>
+        );
+      }
+      return (
+        <motion.span
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
+          💣
+        </motion.span>
+      );
     }
     if (cell.adjacentMines > 0) {
-      return <span className={getNumberColor(cell.adjacentMines)}>{cell.adjacentMines}</span>;
+      return (
+        <motion.span 
+          className={getNumberColor(cell.adjacentMines)}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ 
+            type: "spring", 
+            stiffness: 400,
+            delay: 0.1 
+          }}
+        >
+          {cell.adjacentMines}
+        </motion.span>
+      );
     }
     return null;
   };
@@ -61,17 +122,49 @@ const Cell: React.FC<CellProps> = ({ cell, isFocused, onMouseDown }) => {
 
   const cellStyle = `${baseStyle} ${cell.isRevealed ? revealedStyle : unrevealedStyle} ${focusStyle} ${transitionStyle}`;
 
+  // Animation variants for cell reveal
+  const cellVariants = {
+    hidden: { scale: 1, rotateY: 0 },
+    revealed: { 
+      scale: [1, 1.05, 1],
+      rotateY: cell.isRevealed ? [0, 180, 180] : 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut"
+      }
+    },
+    exploded: {
+      scale: [1, 1.2, 0.9, 1.1, 1],
+      rotate: [0, -5, 5, -3, 0],
+      transition: {
+        duration: 0.6,
+        ease: "easeInOut"
+      }
+    }
+  };
+
+  const getAnimationState = () => {
+    if (cell.isExploded) return "exploded";
+    if (cell.isRevealed) return "revealed";
+    return "hidden";
+  };
+
   return (
-    <div
+    <motion.div
       className={cellStyle}
       onMouseDown={onMouseDown}
       onContextMenu={(e) => e.preventDefault()} // 컨텍스트 메뉴 기본 동작 방지
       role="button"
       tabIndex={isFocused ? 0 : -1}
       aria-label={`Cell ${cell.isFlagged ? 'flagged' : cell.isRevealed ? (cell.isMine ? 'mine' : cell.adjacentMines ? `${cell.adjacentMines} adjacent mines` : 'empty') : 'unrevealed'}`}
+      variants={cellVariants}
+      initial="hidden"
+      animate={getAnimationState()}
+      whileHover={!cell.isRevealed ? { scale: 1.05 } : {}}
+      whileTap={!cell.isRevealed ? { scale: 0.95 } : {}}
     >
       {renderContent()}
-    </div>
+    </motion.div>
   );
 };
 
